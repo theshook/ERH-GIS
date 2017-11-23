@@ -1,0 +1,71 @@
+<template name="CreateUser">
+  <div class="row">
+    <div class="col-md-9 offset-md-1">
+      <div id="accordion" role="tablist">
+        <div class="card">
+          <div class="card-header" role="tab" id="headingOne">
+            <h6 class="mb-0">
+              <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Create User
+              </a>
+            </h6>
+          </div>
+          <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+              <form class="create-user-form">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="fname">First Name</label>
+                    <input type="text" class="form-control" id="fname" name="fname" aria-describedby="fnameHelp" placeholder="Enter First Name">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="lname">Last Name</label>
+                    <input type="text" class="form-control" name="lname" id="lname" aria-describedby="lnameHelp" placeholder="Enter Last Name">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="local">Locality</label>
+                    <input type="text" class="form-control" name="local" id="local" aria-describedby="localHelp" placeholder="Enter Locality (e.g. Calasiao)">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp" placeholder="Password">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="repassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="repassword" name="repassword" aria-describedby="repasswordHelp" placeholder="Confirm Password">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="dept">Department</label>
+                    <select name="dept" class="form-control" id="dept">
+                      <option value="Hospital">Hospital</option>
+                      <option value="Police">Police</option>
+                      <option value="Fire Protection">Fire Protection</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="userType">User Type</label>
+                    <select name="userType" class="form-control" id="userType">
+                      <option value="Employee">Employee</option>
+                      <option value="Rescue Unit">Rescue Unit</option>
+                      {{#if isInRole 'Admin'}}
+                      <option value="Admin">Admin</option>
+                      {{/if}}
+                    </select>
+                  </div>
+                  <div class="form-group col-md-10 offset-md-1">
+                    <button type="submit" class="btn btn-outline-primary btn-block">Create</button>
+                  </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dropdown-divider"></div>
+</template>

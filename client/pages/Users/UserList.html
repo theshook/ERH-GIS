@@ -1,0 +1,55 @@
+<template name="UserList">
+  <!-- Search Input -->
+  {{> EasySearch.Input index=index attributes=inputAttributes }}
+
+  {{#EasySearch.IfInputEmpty index=index }}
+    <div class="text-info">For example "example@something.com"</div>
+  {{else}}
+    {{#if resultsCount}}
+      <div class="text-success">{{resultsCount}} results found.</div>
+    {{/if}}
+  {{/EasySearch.IfInputEmpty}}
+
+  <!-- When Searching a data -->
+  {{#EasySearch.IfSearching index=index }}
+    <div class="text-secondary">Searching</div>
+  {{/EasySearch.IfSearching}}
+
+  <div class="dropdown-divider"></div>
+  <table class="{{editMode}}">
+    <tr>
+      <th>Id</th>
+      <th>Email</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Local</th>
+      <th>Department</th>
+      <th>Created At</th>
+      <th>User Type</th>
+    </tr>
+  {{#EasySearch.Each index=index }}
+    <tr>
+      <td class="user_id">{{_id}}</td>
+      <td>{{userEmail}}</td>
+      <td>{{profile.fname}}</td>
+      <td>{{profile.lname}}</td>
+      <td>{{profile.local}}</td>
+      <td>{{userDept}}</td>
+      <td>{{dateFormat}}</td>
+      <td>{{userType}}
+        {{#if currentEdit}}
+          <!-- EDIT USER -->
+          {{> EditUser}}
+        {{/if}}
+      </td>
+    </tr>
+  {{/EasySearch.Each}}
+  </table>
+  <div class="dropdown-divider"></div>
+  {{#EasySearch.IfNoResults index=index }}
+    <div class="padded no-results black">No results found</div>
+  {{else}}
+
+  {{/EasySearch.IfNoResults}}
+  {{> EasySearch.Pagination index=index maxPages=10 }}
+</template>

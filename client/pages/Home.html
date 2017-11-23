@@ -1,0 +1,11 @@
+<template name="Home">
+  <center>
+    <div>
+      {{#unless currentUser}}
+        {{> Login}}
+      {{else}}
+        <h2>Welcome to Emergency Response Hub with Geographic Information System</h2>
+      {{/unless}}
+    </div>
+  </center>
+</template>

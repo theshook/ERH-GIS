@@ -1,0 +1,9 @@
+<template name="Header">
+    <header class="header">
+      {{#unless currentUser}}
+        <h2 class="site-title"><a href="/">Emegency Response Hub</a></h2>
+      {{else}}
+        <h2 class="site-title"><a href="/dashboard">Emegency Response Hub</a></h2>
+      {{/unless}}
+    </header>
+</template>

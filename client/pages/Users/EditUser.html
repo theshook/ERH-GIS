@@ -1,0 +1,44 @@
+<template name="EditUser">
+  <div class="user-edit">
+    <i class="fa fa-close close-edit-mode"></i>
+    <h3>Edit User</h3>
+    <form class="edit-user-form">
+      <div class="container">
+        <div class="form-group">
+          <input type="text" value="{{editMode.profile.fname}}" class="form-control" id="fname" name="fname" aria-describedby="fnameHelp" placeholder="Enter First Name">
+        </div>
+        <div class="form-group">
+          <input type="text" value="{{editMode.profile.lname}}" class="form-control" name="lname" id="lname" aria-describedby="lnameHelp" placeholder="Enter Last Name">
+        </div>
+        <div class="form-group">
+          <input type="email" value="{{userEmail}}" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <input type="text" value="{{editMode.profile.local}}" class="form-control" name="local" id="local" aria-describedby="localHelp" placeholder="Enter Locality (e.g. Calasiao)">
+        </div>
+        <div class="form-group">
+          <select name="dept" class="form-control" id="dept">
+            <option value="Hospital" selected="{{getUserDept 'Hospital'}}">Hospital</option>
+            <option value="Police" selected="{{getUserDept 'Police'}}">Police</option>
+            <option value="Fire Protection" selected="{{getUserDept 'Fire Protection'}}">Fire Protection</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select name="userType" class="form-control" id="userType">
+            <option value="Employee" selected="{{getUserType 'Employee'}}">Employee</option>
+            <option value="Rescue Unit" selected="{{getUserType 'Rescue Unit'}}">Rescue Unit</option>
+            <option value="Admin" selected="{{getUserType 'Admin'}}">Admin</option>
+          </select>
+        </div>
+        {{#if rescueUnit}}
+        <div class="form-group">
+          <input type="text" value="{{editMode.profile.plate}}" class="form-control" name="plate" id="plate" aria-describedby="localHelp" placeholder="Plate Number">
+        </div>
+        {{/if}}
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary btn-block">Update</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
