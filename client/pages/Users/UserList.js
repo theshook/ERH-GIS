@@ -15,12 +15,6 @@ Template.UserList.helpers({
   userEmail: function () {
     return this.emails[0].address;
   },
-  userDept: function () {
-    return this.roles[1];
-  },
-  userType: function () {
-    return this.roles[0];
-  },
   dateFormat: function () {
     return moment(this.createdAt).format('MMM D YYYY');
   },

@@ -1,4 +1,5 @@
 <template name="EditUser">
+  {{#if Template.subscriptionsReady}}
   <div class="user-edit">
     <i class="fa fa-close close-edit-mode"></i>
     <h3>Edit User</h3>
@@ -18,16 +19,16 @@
         </div>
         <div class="form-group">
           <select name="dept" class="form-control" id="dept">
-            <option value="Hospital" selected="{{getUserDept 'Hospital'}}">Hospital</option>
-            <option value="Police" selected="{{getUserDept 'Police'}}">Police</option>
-            <option value="Fire Protection" selected="{{getUserDept 'Fire Protection'}}">Fire Protection</option>
+            <option value="Hospital" selected="{{UserDept 'Hospital'}}">Hospital</option>
+            <option value="Police" selected="{{UserDept 'Police'}}">Police</option>
+            <option value="Fire Protection" selected="{{UserDept 'Fire Protection'}}">Fire Protection</option>
           </select>
         </div>
         <div class="form-group">
           <select name="userType" class="form-control" id="userType">
-            <option value="Employee" selected="{{getUserType 'Employee'}}">Employee</option>
-            <option value="Rescue Unit" selected="{{getUserType 'Rescue Unit'}}">Rescue Unit</option>
-            <option value="Admin" selected="{{getUserType 'Admin'}}">Admin</option>
+            <option value="Employee" selected="{{UserType 'Employee'}}">Employee</option>
+            <option value="Rescue Unit" selected="{{UserType 'Rescue Unit'}}">Rescue Unit</option>
+            <option value="Admin" selected="{{UserType 'Admin'}}">Admin</option>
           </select>
         </div>
         {{#if rescueUnit}}
@@ -41,4 +42,5 @@
       </div>
     </form>
   </div>
+  {{/if}}
 </template>

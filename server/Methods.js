@@ -61,7 +61,7 @@ Meteor.methods({
             Rescue_Team.update(userId: id, {
               $set: {
               type: user.dept,
-              plate: '',
+              plate: user.plate,
               lat: '',
               long: '',
               createdAt: new Date(),
@@ -70,7 +70,7 @@ Meteor.methods({
             Rescue_Team.insert({
               userId: id,
               type: user.dept,
-              plate: '',
+              plate: user.plate,
               lat: '',
               long: '',
               createdAt: new Date(),
