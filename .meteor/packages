@@ -45,3 +45,5 @@ easysearch:elasticsearch
 easysearch:autosuggest
 
 digilord:faker
+
+aldeed:tabular

@@ -56,32 +56,70 @@ Meteor.methods({
         }});
 
         if (user.userType == 'Rescue Unit') {
-          let count = Rescue_Team.find({userId: id}).count();
-          if( count == 1) {
-            Rescue_Team.update(userId: id, {
-              $set: {
-              type: user.dept,
-              plate: user.plate,
-              lat: '',
-              long: '',
-              createdAt: new Date(),
-            }});
-          } else {
-            Rescue_Team.insert({
-              userId: id,
-              type: user.dept,
-              plate: user.plate,
-              lat: '',
-              long: '',
-              createdAt: new Date(),
-            });
+          const newProfile = {
+            fname: user.fname,
+            lname: user.lname,
+            local: user.local,
+            plate: user.plate
           }
+          Meteor.users.update(id, {
+            $set: {
+              profile : newProfile
+            }});
         }
 
       Roles.setUserRoles(id, [user.userType, user.dept]);
       return 'User succesfully updated';
     } catch(e) {
       return e;
+    }
+  },
+  'login.info'(id, lt, lg, stats) {
+    let status = stats;
+    let lat = lt;
+    let lng = lg;
+    try {
+      Meteor.users.update(id, {
+        $set: {
+          status: status,
+          lat,
+          lng
+          
+      }});
+    } catch(e) {
+      console.log(e);
+    }
+  },
+  'user.status'(id, stats) {
+    let status = stats;
+    Meteor.users.update(id, {
+      $set: {
+        status: status
+      }
+    });
+  },
+  'going'(id, status) {
+    try {
+      Meteor.users.update(id, {
+        $set: {
+          going: status,         
+      }});
+    } catch(e) {
+      console.log(e);
+    }
+  },
+  'directionsList'(id, directions) {
+    try {
+      Meteor.users.update(id, {
+        $set: {
+          directions: 
+          {origin: {lat: directions.lt, lng: directions.lg},
+          destination: {lat: directions.lat, lng: directions.lng}}
+          
+        }
+      });
+    } catch(e) {
+      console.log(e);
     }
   }
 });

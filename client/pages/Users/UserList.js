@@ -1,14 +1,15 @@
 import moment from 'moment';
 import { Session } from 'meteor/session';
 import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 
-// import { Rescue_Team } from '../../../imports/api/RescueCollection.js';
+import { Rescue_Team } from '../../../imports/api/RescueCollection.js';
 
 Template.UserList.onCreated(function() {
   this.state = new ReactiveDict;
     Meteor.subscribe('users_collection');
-    // Meteor.subscribe('rescue_collection');
+    Meteor.subscribe('rescue_collection');
 });
 
 Template.UserList.helpers({
@@ -22,6 +23,11 @@ Template.UserList.helpers({
     let user = Session.get('currentUser');
     if (user == null) {
       return false;
+    }
+    if (user.roles[0] === 'Rescue Unit') {
+      Session.set('showPlate', true)
+    } else {
+      Session.set('showPlate', false)
     }
     return user._id == this._id;
   },
@@ -55,3 +61,5 @@ Template.UserList.events({
       Session.set('currentUser', null);
   },
 });
+
+

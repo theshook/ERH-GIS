@@ -25,17 +25,12 @@
           </select>
         </div>
         <div class="form-group">
-          <select name="userType" class="form-control" id="userType">
+          <select name="userType" class="form-control userType">
             <option value="Employee" selected="{{UserType 'Employee'}}">Employee</option>
             <option value="Rescue Unit" selected="{{UserType 'Rescue Unit'}}">Rescue Unit</option>
             <option value="Admin" selected="{{UserType 'Admin'}}">Admin</option>
           </select>
         </div>
-        {{#if rescueUnit}}
-        <div class="form-group">
-          <input type="text" value="{{editMode.profile.plate}}" class="form-control" name="plate" id="plate" aria-describedby="localHelp" placeholder="Plate Number">
-        </div>
-        {{/if}}
         <div class="form-group">
           <button type="submit" class="btn btn-outline-primary btn-block">Update</button>
         </div>

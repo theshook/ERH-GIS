@@ -1,9 +1,17 @@
 <template name="Header">
-    <header class="header">
+    <header class="header fixed-top">
       {{#unless currentUser}}
         <h2 class="site-title"><a href="/">Emegency Response Hub</a></h2>
       {{else}}
-        <h2 class="site-title"><a href="/dashboard">Emegency Response Hub</a></h2>
+        {{#unless isInRole 'Admin'}}
+          <h2 class="site-title">ERH</h2>
+          <h6 class="site-title">{{currentUser.profile.lname}}, {{currentUser.profile.fname}}</h6>
+          <h6 class="site-title logout"><a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a></h6>
+        {{else}}
+          <h2 class="site-title"><a href="/dashboard">Emegency Response Hub</a></h2>
+          <h4 class="site-title">{{currentUser.profile.lname}}, {{currentUser.profile.fname}}</h4>
+        {{/unless}}
+          <!-- {{currentUser.roles.[0]}} -->
       {{/unless}}
     </header>
 </template>

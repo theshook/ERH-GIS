@@ -1,4 +1,7 @@
 import toastr from 'toastr';
+import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
 
 Template.Login.events({
   'submit .login-form': function (event) {
@@ -12,7 +15,12 @@ Template.Login.events({
         toastr.warning('Login failed.');
       } else {
         toastr.success('User succesfully login.');
-        FlowRouter.go('dashboard');
+        if (Roles.userIsInRole(Meteor.userId(), 'Rescue Unit'))
+        {
+          FlowRouter.go('mapsRescueTeam')
+        } else {
+          FlowRouter.go('dashboard');
+        }
       }
     });
   }

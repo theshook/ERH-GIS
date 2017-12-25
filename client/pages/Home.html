@@ -4,7 +4,11 @@
       {{#unless currentUser}}
         {{> Login}}
       {{else}}
-        <h2>Welcome to Emergency Response Hub with Geographic Information System</h2>
+        {{#unless isInRole 'Admin'}}
+          {{> RescueMaps}}
+        {{else}}
+          {{> Dashboard}}
+        {{/unless}}
       {{/unless}}
     </div>
   </center>

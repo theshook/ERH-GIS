@@ -1,7 +1,14 @@
 <template name="Dashboard">
-  {{#if admin}}
-    <h1 class="page-title">Dashboard</h1>
-  {{else}}
-    <h1>Not Authorized</h1>
-  {{/if}}
+  <div class="mt-5">
+    {{#if police}}
+      <h1 class="page-title">Police Department</h1>
+    {{/if}}
+    {{#if hospital}}
+      <h1 class="page-title">Hospital Department</h1>
+    {{/if}}
+    {{#if fire}}
+      <h1 class="page-title">Fire Protection Department</h1>
+    {{/if}}
+      <h2>Locality of {{currentUser.profile.local}}</h2>
+  </div>
 </template>

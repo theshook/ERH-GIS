@@ -1,11 +1,12 @@
 import toastr from 'toastr';
+import { Session } from 'meteor/session';
+import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
 
 Template.EditUser.helpers({
   editMode: function () {
     return Session.get('currentUser');
-  },
-  rescueUnit: function() {
-    return ( Roles.userIsInRole(this._id, 'Rescue Unit'));
   },
   userEmail: function () {
     return this.emails[0].address;
@@ -30,23 +31,16 @@ Template.EditUser.events({
       const dept = target.dept.value;
       const userType = target.userType.value;
 
-      if (userType == 'Rescue Unit') {
-        const plate = target.plate.value;
-          if (checkString(plate)) {
-            return toastr.warning("Kindly fill up all fields.");
-          }
-      }
-
       if (checkString(email) || checkString(fname) || checkString(lname) || checkString(local)) {
         return toastr.warning("Kindly fill up all fields.");
       }
 
       if (Roles.userIsInRole(Meteor.userId(), 'Admin')) {
-        Meteor.call('UpdateUser', this._id, {fname, email, lname, local, dept, userType, plate},
+        Meteor.call('UpdateUser', this._id, {fname, email, lname, local, dept, userType},
         function (error, result) {
           if (result) {
             toastr.success('User succesfully updated.');
-            return Session.set('currentUser', '');
+            return Session.set('currentUser', null);
           } else {
             toastr.warning('There are some error encountered.');
           }
@@ -54,5 +48,13 @@ Template.EditUser.events({
       } else {
         return toastr.warning("You don't have credentials to edit users data. Kindly contact administrator.");
       }
-    },
+  },
+  'change .userType': function (event) {
+    const userType = event.target.value;
+    if (userType === 'Rescue Unit') {
+      Session.set('showPlate', true);
+    } else {
+      Session.set('showPlate', false);
+    }
+  },
 });
