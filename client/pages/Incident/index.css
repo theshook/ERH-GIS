@@ -1,0 +1,28 @@
+@media print {
+  #myElementId { 
+    float: none !important; 
+    position: static !important; 
+    display: inline; 
+    box-sizing: content-box !important;
+    
+    overflow: auto;
+}
+  #avoid { 
+    float: left;
+    page-break-inside: avoid; page-break-after: always; 
+ }
+ p { 
+  clear: both; 
+  text-align: center;
+  display:flex;
+  justify-content:center;
+}
+h5 {
+  clear: both; float: left; display: block; position: relative;
+}
+
+  .list-group-item {color: chocolate}
+
+}
+
+

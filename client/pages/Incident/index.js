@@ -2,36 +2,9 @@ import { Markers } from '../../../imports/api/MapsCollection.js';
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import { Session } from 'meteor/session';
 import moment from 'moment';
 import toastr from 'toastr';
-
-Template.myList.onCreated(function () {
-  this.pagination = new Meteor.Pagination(Markers, {
-      sort: {
-          _id: -1
-      }
-  });
-});
-
-Template.myList.helpers({
-  isReady: function () {
-      return Template.instance().pagination.ready();
-  },
-  templatePagination: function () {
-      return Template.instance().pagination;
-  },
-  documents: function () {
-      return Template.instance().pagination.getPage();
-  },
-  // optional helper used to return a callback that should be executed before changing the page
-  clickEvent: function() {
-      return function(e, templateInstance, clickedPage) {
-          e.preventDefault();
-          console.log('Changing page from ', templateInstance.data.pagination.currentPage(), ' to ', clickedPage);
-      };
-  }
-});
-
 
 newDate = function (val) {
   if (val instanceof Date) {
@@ -50,7 +23,7 @@ Template.Incidents.onCreated(function() {
   this.state = new ReactiveDict;
   this.state.set( 'from', null );
   this.state.set( 'to', null );
-  Meteor.subscribe('markers_collection')
+  this.subscribe('markers_collection');
 });
 
 Template.Incidents.helpers({
@@ -91,13 +64,39 @@ Template.Incidents.events({
 
     template.state.set( 'from', from );
     template.state.set( 'to', to );
-    target.to.value='';
-    target.from.value='';
+    
 
   },
   'click .clear': function (event, template) {
-
+    
     template.state.set( 'from', null );
     template.state.set( 'to', null );
+  },
+  'click .print': function() {
+    let from = Template.instance().state.get( 'from' );
+    let to = Template.instance().state.get( 'to' );
+    let all;
+    
+    if(from == null || to == null || from == '' || to == '') {
+      all = "Print All";
+    } else {
+      all = "From: " + from + "  To: " + to;
+    }
+
+    let append = "<p>******************************************* NOTHING FOLLOWS *******************************************</p><h5>Prepare By:<h5><br />";
+
+    $("#myElementId").print({
+      globalStyles: true,
+      mediaPrint: true,
+      stylesheet: './index.css',
+      noPrintSelector: ".no-print",
+      iframe: false,
+      append: append + "<h5>" + Meteor.user().profile.lname + ", " + Meteor.user().profile.fname + "</h5>",
+      prepend: "<h3>Locale: " + Meteor.user().profile.local + "<br>" + "Department: " + Meteor.user().roles[1] + " <br /></h3>",
+      manuallyCopyFormValues: true,
+      deferred: $.Deferred(),
+      title: all,
+      doctype: '<!doctype html>'
+    });
   }
 });

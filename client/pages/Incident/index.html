@@ -1,9 +1,12 @@
 <template name="Incidents">
+<style>
+
+</style>
 <div class="container mt-5">
   <h3 class="warning">Incidents List</h3>
-  
+
   <form class="getDate">
-    <div class="row">
+  <div class="row">
     <div class="col-md-3">
       <div class="form-group">
         <input type="text" class="form-control" name="from" placeholder="Select Date From">
@@ -18,47 +21,38 @@
 
     <div class="col-md-3">
       <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="click" class="btn btn-primary clear">Reset</button>
+        <button type="submit" class="btn btn-primary">Submit</button>        
+        <button type="reset" class="btn btn-warning clear">Reset</button>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-group">
+        <button type="button" class="btn btn-info print" >Print</button>
       </div>
     </div>
   </div>
-  </form>
-  <div class="row">
+  </form>  
+  <div class="row " id="myElementId">
     {{#each markers}}
-    <div class="col-md-4 mb-3">
-      <div class="card" style="width: 20rem;">
-        <div class="card-header">{{date}}</div>
-        <img class="card-img-top" src="{{imageUrl}}" alt="{{address}}" height="300px">
-        <div class="card-body">
-          <h6 class="card-title">{{address}}</h6>
+      <div id="avoid">
+        <div class="col-sm-4 mb-2">
+          <div class="card" style="width: 18rem;">
+            <div class="card-header">{{date}}</div>
+              <img class="card-img-top" src="{{imageUrl}}" alt="{{address}}" height="300px">
+            <div class="card-body">
+              <h6 class="card-title">{{address}}</h6>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Fire Unit: {{fire}}</li>
+              <li class="list-group-item">Hospital Unit: {{hospital}}</li>
+              <li class="list-group-item">Police Unit: {{police}}</li>
+            </ul>
+          </div>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Fire Unit: {{fire}}</li>
-          <li class="list-group-item">Hospital Unit: {{hospital}}</li>
-          <li class="list-group-item">Police Unit: {{police}}</li>
-        </ul>
-      </div>
-    </div>
+      </div>    
     {{/each}}
   </div>
-  {{> myList}}
 </div>
-
-
-</template>
-
-<template name="myList">
-  <div>
-      {{#if isReady}}
-          <ul>
-            {{#each documents}}
-                <li>Document #{{_id}}</li>
-            {{/each}}
-          </ul>
-          {{> defaultBootstrapPaginator pagination=templatePagination limit=3 containerClass="text-center" onClick=clickEvent}}
-      {{else}}
-          Loading...
-      {{/if}}
-  </div>
+<script type="text/JavaScript" src="jQuery.print.js"></script>
 </template>

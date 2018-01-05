@@ -1,18 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { publishPagination } from 'meteor/kurounin:pagination'
 
 export const Markers = new Mongo.Collection('incident');
 
 if (Meteor.isServer) {
-  publishPagination(Markers);
 
   Meteor.publish('markers_collection', function mapsPublication() {
     return Markers.find({});
   });
+
   Meteor.publish('users-rescue_collection', function () {
     return Meteor.users.find({});
   });
+
 }
 
 Meteor.methods({
