@@ -3,6 +3,7 @@ import { Session } from 'meteor/session';
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import { Accounts } from 'meteor/accounts-base'
 
 Template.EditUser.helpers({
   editMode: function () {
@@ -49,12 +50,8 @@ Template.EditUser.events({
         return toastr.warning("You don't have credentials to edit users data. Kindly contact administrator.");
       }
   },
-  'change .userType': function (event) {
-    const userType = event.target.value;
-    if (userType === 'Rescue Unit') {
-      Session.set('showPlate', true);
-    } else {
-      Session.set('showPlate', false);
-    }
-  },
+  'click .rstPassword': function () {
+    console.log('Password Reset');
+    Meteor.call('rstPassword', this._id, 'qweasd');
+  }
 });

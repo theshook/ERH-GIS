@@ -13,6 +13,9 @@ Meteor.methods({
       Roles.addUsersToRoles(id, 'admin');
     }
   },
+  'rstPassword'(id, password) {
+    Accounts.setPassword(id, password);
+  },
   'createNewUser'(user) {
     try{
       var id = Accounts.createUser({

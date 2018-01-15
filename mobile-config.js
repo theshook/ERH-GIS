@@ -4,6 +4,10 @@ App.info({
   version: '0.0.1'
 });
 
+App.configurePlugin('phonegap-plugin-push', {
+  SENDER_ID: 763632509676
+});
+
 App.accessRule('*.google.com/*');
 App.accessRule('*.googleapis.com/*');
 App.accessRule('*.gstatic.com/*');

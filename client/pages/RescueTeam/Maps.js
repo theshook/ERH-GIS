@@ -8,7 +8,7 @@ import toastr from 'toastr';
 import Legend from './Legend.js';
 import { Session } from 'meteor/session';
 
-var MAP_ZOOM = 15;
+var MAP_ZOOM = 10;
 var directionsService;
 var directionsDisplay;
 var directions = {};
@@ -68,13 +68,16 @@ Template.RescueMaps.onCreated(function() {
 
     infowindow = new google.maps.InfoWindow();
     var markers = {};
-
+    let type = Meteor.user().roles[1] +" Unit"
+    let h = "Hospital Unit";
+    let p = "Police Unit";
+    let f = "Fire Unit";
     // START
-    Markers.find().observe({
+    Markers.find({ incidentType: type}).observe({
         added: function (document) {
 
          var marker = new google.maps.Marker({
-            draggable: false,
+            draggable: false, 
             animation: google.maps.Animation.DROP,
             position: new google.maps.LatLng(document.lat, document.lng),
             map: map.instance,
@@ -90,7 +93,7 @@ Template.RescueMaps.onCreated(function() {
 
             let marky = Markers.findOne({_id: marker.id});
 
-            console.log(marky)
+            //console.log(marky)
             let date, local, address, hospital, image;
             date = newDate(marky.createdAt);
             local = marky.local
@@ -103,6 +106,8 @@ Template.RescueMaps.onCreated(function() {
             Session.set('lat', marky.lat);
             Session.set('lng', marky.lng);
             Session.set('markerId', marker.id);
+            Session.set('imageUrl', image);
+            Session.set('address', address);
 
             infowindow.setContent(
             '<div class="container">'+
@@ -116,6 +121,9 @@ Template.RescueMaps.onCreated(function() {
                 '<h5 class="text-primary">Police Unit: '+ police +' </h5>'+
                 '<h5 class="text-primary">First Aid Unit: '+ hospital +' </h5>'+
                 '<button class="btn btn-outline-primary response">Go to this incident</button>'+
+                '<button class="btn btn-outline-warning rFire">I need Fire Unit</button>'+
+                '<button class="btn btn-outline-info rPolice">I need Police Unit</button>'+
+                '<button class="btn btn-outline-danger rHospital">I need Hospital Unit</button>'+
               '</div>'+
               '<div class="col-md-6">' +
                 '<img src="' + image + '" height="300" width="300"/>'+
@@ -159,7 +167,7 @@ Template.RescueMaps.onCreated(function() {
             icon = '/firemen.png';
           }
            var marker = new google.maps.Marker({
-            draggable: true,
+            draggable: false,
               animation: google.maps.Animation.DROP,
               position: new google.maps.LatLng(document.lat, document.lng),
               map: map.instance,
@@ -302,7 +310,22 @@ Template.RescueMaps.events({
     });
 
     infowindow.close();
-  }
+  },
+  'click .rFire'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'Fire Unit');
+    Meteor.call('serverNotification', 'Fire Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
+  'click .rPolice'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'Police Unit');
+    Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
+  'click .rHospital'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'Hospital Unit');
+    Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
 });
 
 Template.RescueMaps.helpers({

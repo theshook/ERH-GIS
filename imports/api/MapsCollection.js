@@ -16,7 +16,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'markers.insert' (lat, lng, imageUrl, city, address) {
+  'markers.insert' (lat, lng, imageUrl, city, address, rescue) {
     Markers.insert({
       lat: lat,
       lng: lng,
@@ -25,9 +25,7 @@ Meteor.methods({
       address: address,
       imageUrl: imageUrl,
       icon: '/red-circle.png',
-      incidentType: '',
-      injured: '',
-      died: '',
+      incidentType: [rescue],
       createdAt: new Date
     });
   },
@@ -45,6 +43,13 @@ Meteor.methods({
         $set: {
           icon: icon
         }});
+  },
+  'markers.addRescue'(id,unit) {
+    Markers.update(id, {
+      $addToSet: {
+        'incidentType': unit
+      }
+    });
   },
   'markers.rescue'(id, userId, unit){
     if (unit == 'Hospital') {

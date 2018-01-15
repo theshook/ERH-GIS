@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import '../imports/api/RescueCollection.js';
+import '../imports/server/push.js';
 import { Markers } from '../imports/api/MapsCollection.js';
 
 import './Methods.js';
