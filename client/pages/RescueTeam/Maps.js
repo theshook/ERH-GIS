@@ -69,9 +69,7 @@ Template.RescueMaps.onCreated(function() {
     infowindow = new google.maps.InfoWindow();
     var markers = {};
     let type = Meteor.user().roles[1] +" Unit"
-    let h = "Hospital Unit";
-    let p = "Police Unit";
-    let f = "Fire Unit";
+
     // START
     Markers.find({ incidentType: type}).observe({
         added: function (document) {
@@ -93,7 +91,7 @@ Template.RescueMaps.onCreated(function() {
 
             let marky = Markers.findOne({_id: marker.id});
 
-            //console.log(marky)
+
             let date, local, address, hospital, image;
             date = newDate(marky.createdAt);
             local = marky.local
@@ -109,28 +107,53 @@ Template.RescueMaps.onCreated(function() {
             Session.set('imageUrl', image);
             Session.set('address', address);
 
+            // Search if UserId exist in marker
+            // function include(arr,obj) {
+            //   return (arr.indexOf(obj) != -1);
+            // }
+            // let userExist;
+            // if(hospital != 0){
+            //   userExist = include(marky.Hospital, userId)
+            // }else if(fire != 0){
+            //   userExist = include(marky.Fire, userId)
+            // }else if(police != 0){
+            //   userExist = include(marky.Police, userId)
+            // }else{
+            //   userExist = false
+            // }
+
+            // let userTrue;
+
+            // if(userExist){
+            //   userTrue = '<button class="btn btn-outline-primary unresponse">Can\'t to this incident</button>';
+            // } else if (Meteor.user().directions.destination.lat != null){
+            //   userTrue = '<button class="btn btn-outline-secondary response" disabled>Go to this incident</button>';
+            // }else{
+            //   userTrue = '<button class="btn btn-outline-primary response">Go to this incident</button>';
+            // }
+            
             infowindow.setContent(
             '<div class="container">'+
-            '<div class="row">'+
-              '<div class="col-md-6">' +
-                '<h3 class="text-info">Date: '+ date +'</h3>'+
-                '<h5 class="text-info">Local: '+ local +'</h5>'+
-                '<h5 class="text-info">Address: '+ address +'</h5>'+
-                '<h5 class="text-primary">Rescue Unit will go</h5>'+
-                '<h5 class="text-primary">Fire Unit: '+ fire +' </h5>'+
-                '<h5 class="text-primary">Police Unit: '+ police +' </h5>'+
-                '<h5 class="text-primary">First Aid Unit: '+ hospital +' </h5>'+
-                '<button class="btn btn-outline-primary response">Go to this incident</button>'+
-                '<button class="btn btn-outline-warning rFire">I need Fire Unit</button>'+
-                '<button class="btn btn-outline-info rPolice">I need Police Unit</button>'+
-                '<button class="btn btn-outline-danger rHospital">I need Hospital Unit</button>'+
+              '<div class="row">'+
+                '<div class="col-md-6">' +
+                  '<h3 class="text-info">Date: '+ date +'</h3>'+
+                  '<h5 class="text-info">Local: '+ local +'</h5>'+
+                  '<h5 class="text-info">Address: '+ address +'</h5>'+
+                  '<h5 class="text-primary">Rescue Unit will go</h5>'+
+                  '<h5 class="text-primary">Fire Unit: '+ fire +' </h5>'+
+                  '<h5 class="text-primary">Police Unit: '+ police +' </h5>'+
+                  '<h5 class="text-primary">First Aid Unit: '+ hospital +' </h5>'+
+                  '<button class="btn btn-outline-primary response">Go to this incident</button>' +
+                  '<button class="btn btn-outline-warning rFire">I need Fire Unit</button>'+
+                  '<button class="btn btn-outline-info rPolice">I need Police Unit</button>'+
+                  '<button class="btn btn-outline-danger rHospital">I need Hospital Unit</button>'+
+                '</div>'+
+                '<div class="col-md-6">' +
+                  '<img src="' + image + '" height="300" width="300"/>'+
+                '</div>'+
               '</div>'+
-              '<div class="col-md-6">' +
-                '<img src="' + image + '" height="300" width="300"/>'+
-                
-              '</div>'+
-            '</div>'+
-            '</div>');
+            '</div>'
+            );
             infowindow.open(map, marker);
           });
 
@@ -215,6 +238,24 @@ Template.RescueMaps.onCreated(function() {
           },
           changed: function(newDocument, oldDocument) {
             markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng});
+
+            if (Meteor.userId() === newDocument._id) {
+              let from = new google.maps.LatLng(Geolocation.latLng());
+              let to = new google.maps.LatLng(newDocument.directions.destination.lat, newDocument.directions.destination.lng);
+              var request = {
+                origin: from,
+                destination: to,
+                travelMode: "DRIVING",
+              };
+  
+              directionsService.route(request, function(response, status) {
+                if (status == 'OK') {
+                  directionsDisplay.setDirections(response);
+                  infowindow.close();
+                  directions[newDocument._id] = request;
+                }
+              });
+              }
           },
           removed: function(oldDocument) {
             // Remove the marker from the map
@@ -309,6 +350,12 @@ Template.RescueMaps.events({
       }
     });
 
+    infowindow.close();
+  },
+  'click .unresponse'() {
+    directionsDisplay.setDirections({routes: []});
+    Meteor.call('directionsList', Meteor.userId(), {});
+    Meteor.call('markers.remove.rescue', Session.get('markerId'), Meteor.userId(), Meteor.user().roles[1])
     infowindow.close();
   },
   'click .rFire'() {

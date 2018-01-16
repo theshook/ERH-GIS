@@ -77,6 +77,32 @@ Meteor.methods({
         }
       );
     }
-
+  },
+  'markers.remove.rescue'(id, userId, unit){
+    if (unit == 'Hospital') {
+      Markers.update(
+        id, {
+          $pull: {
+            'Hospital': userId
+          }
+        }
+      );
+    } else if(unit == 'Fire Protection'){
+      Markers.update(
+        id, {
+          $pull: {
+            'Fire': userId
+          }
+        }
+      );
+    } else if (unit == 'Police') {
+      Markers.update(
+        id, {
+          $pull: {
+            'Police': userId
+          }
+        }
+      );
+    }
   }
 });

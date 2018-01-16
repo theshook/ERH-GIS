@@ -83,7 +83,7 @@ Template.Incidents.events({
       all = "From: " + from + "  To: " + to;
     }
 
-    let append = "<p>******************************************* NOTHING FOLLOWS *******************************************</p><h5>Prepare By:<h5><br />";
+    let append = "<p>******************************************* NOTHING FOLLOWS *******************************************</p><h5>Prepare By:<br />";
 
     $("#myElementId").print({
       globalStyles: true,
@@ -91,7 +91,7 @@ Template.Incidents.events({
       stylesheet: './index.css',
       noPrintSelector: ".no-print",
       iframe: false,
-      append: append + "<h5>" + Meteor.user().profile.lname + ", " + Meteor.user().profile.fname + "</h5>",
+      append: append + "" + Meteor.user().profile.lname + ", " + Meteor.user().profile.fname + "</h5>",
       prepend: "<h3>Locale: " + Meteor.user().profile.local + "<br>" + "Department: " + Meteor.user().roles[1] + " <br /></h3>",
       manuallyCopyFormValues: true,
       deferred: $.Deferred(),
