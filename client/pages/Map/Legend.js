@@ -13,7 +13,7 @@ export default function() {
       icon: '/police.png'
     },
     solved: {
-      name: 'Responded Incident',
+      name: 'Cleared Incident',
       icon: '/grn-circle.png'
     },
     unsolved: {

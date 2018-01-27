@@ -12,42 +12,91 @@
           </div>
           <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
+              <p>All fields that has * need to be filled.</p>
               <form class="create-user-form">
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label for="fname">First Name</label>
+                    <label for="fname">*First Name</label>
                     <input type="text" class="form-control" id="fname" name="fname" aria-describedby="fnameHelp" placeholder="Enter First Name">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="lname">Last Name</label>
+                    <label for="lname">*Last Name</label>
                     <input type="text" class="form-control" name="lname" id="lname" aria-describedby="lnameHelp" placeholder="Enter Last Name">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="email">Email address</label>
+                    <label for="email">*Email address</label>
                     <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="local">Locality</label>
-                    <input type="text" class="form-control" name="local" id="local" aria-describedby="localHelp" placeholder="Enter Locality (e.g. Calasiao)">
+                    <label for="local">*Locality</label>
+                    <input type="text" class="form-control" name="local" id="local" aria-describedby="textHelp" placeholder="Enter Locale" value="{{UserLocale}}" disabled>
+                    <!-- <select name="local" class="form-control" id="local">
+                      <option title="Agno" value="Agno">Agno</option>
+                      <option title="Aguilar" value="Aguilar">Aguilar</option>
+                      <option title="Alaminos" value="Alaminos">Alaminos</option>
+                      <option title="Alcala" value="Alcala">Alcala</option>
+                      <option title="Anda" value="Anda">Anda</option>
+                      <option title="Asingan" value="Asingan">Asingan</option>
+                      <option title="Balungao" value="Balungao">Balungao</option>
+                      <option title="Bani" value="Bani">Bani</option>
+                      <option title="Basista" value="Basista">Basista</option>
+                      <option title="Bayambang" value="Bayambang">Bayambang</option>
+                      <option title="Binalonan" value="Binalonan">Binalonan</option>
+                      <option title="Binmaley" value="Binmaley">Binmaley</option>
+                      <option title="Bolinao" value="Bolinao">Bolinao</option>
+                      <option title="Bugallon" value="Bugallon">Bugallon</option>
+                      <option title="Burgos" value="Burgos">Burgos</option>
+                      <option title="Calasiao" value="Calasiao">Calasiao</option>
+                      <option title="Dagupan City" value="Dagupan City">Dagupan City</option>
+                      <option title="Dasol" value="Dasol">Dasol</option>
+                      <option title="Infanta" value="Infanta">Infanta</option>
+                      <option title="Labrador" value="Labrador">Labrador</option>
+                      <option title="Laoac" value="Laoac">Laoac</option>
+                      <option title="Lingayen" value="Lingayen">Lingayen</option>
+                      <option title="Mabini" value="Mabini">Mabini</option>
+                      <option title="Malasiqui" value="Malasiqui">Malasiqui</option>
+                      <option title="Manaoag" value="Manaoag">Manaoag</option>
+                      <option title="Mangaldan" value="Mangaldan">Mangaldan</option>
+                      <option title="Mangatarem" value="Mangatarem">Mangatarem</option>
+                      <option title="Mapandan" value="Mapandan">Mapandan</option>
+                      <option title="Natividad" value="Natividad">Natividad</option>
+                      <option title="Pozorrubio" value="Pozorrubio">Pozorrubio</option>
+                      <option title="Rosales" value="Rosales">Rosales</option>
+                      <option title="San Carlos City" value="San Carlos City">San Carlos City</option>
+                      <option title="San Fabian" value="San Fabian">San Fabian</option>
+                      <option title="San Jacinto" value="San Jacinto">San Jacinto</option>
+                      <option title="San Manuel" value="San Manuel">San Manuel</option>
+                      <option title="San Nicolas" value="San Nicolas">San Nicolas</option>
+                      <option title="San Quintin" value="San Quintin">San Quintin</option>
+                      <option title="Santa Barbara" value="Santa Barbara">Santa Barbara</option>
+                      <option title="Santa Maria" value="Santa Maria">Santa Maria</option>
+                      <option title="Santa Tomas" value="Santa Tomas">Santa Tomas</option>
+                      <option title="Sison" value="Sison">Sison</option>
+                      <option title="Sual" value="Sual">Sual</option>
+                      <option title="Tayug" value="Tayug">Tayug</option>
+                      <option title="Umingan" value="Umingan">Umingan</option>
+                      <option title="Urbiztondo" value="Urbiztondo">Urbiztondo</option>
+                      <option title="Villasis" value="Villasis">Villasis</option>
+                    </select> -->
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="password">Password</label>
+                    <label for="password">*Password</label>
                     <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp" placeholder="Password">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="repassword">Confirm Password</label>
+                    <label for="repassword">*Confirm Password</label>
                     <input type="password" class="form-control" id="repassword" name="repassword" aria-describedby="repasswordHelp" placeholder="Confirm Password">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="dept">Department</label>
+                    <label for="dept">*Department</label>
                     <select name="dept" class="form-control" id="dept">
                       <option value="Hospital">Hospital</option>
                       <option value="Police">Police</option>
-                      <option value="Fire Unit">Fire Protection</option>
+                      <option value="Fire">Fire Protection</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="userType">User Type</label>
+                    <label for="userType">*User Type</label>
                     <select name="userType" class="form-control" id="userType">
                       <option value="Employee">Employee</option>
                       <option value="Rescue Unit">Rescue Unit</option>
@@ -59,7 +108,7 @@
                   <div class="form-group col-md-10 offset-md-1">
                     <button type="submit" class="btn btn-outline-primary btn-block">Create</button>
                   </div>
-                  </div>
+                </div>
               </form>
             </div>
           </div>

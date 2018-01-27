@@ -15,6 +15,9 @@ Template.EditUser.helpers({
   UserType: function (curUserType) {
     return this.roles[0] == curUserType ? "selected" : null;
   },
+  UserLocale: function (curUserType) {
+    return this.profile.local == curUserType ? "selected" : null;
+  },
   UserDept: function (curUserType) {
     return this.roles[1] == curUserType ? "selected" : null;
   }

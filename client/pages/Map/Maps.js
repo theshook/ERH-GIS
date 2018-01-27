@@ -66,6 +66,9 @@ Template.Maps.onCreated(function() {
             police = ((marky.Police) ? marky.Police.length : 0)
             image = marky.imageUrl
 
+            Session.set('imageUrl', image);
+            Session.set('address', address);
+
             infowindow.setContent(
             '<div class="container">'+
             '<div class="row">'+
@@ -77,6 +80,9 @@ Template.Maps.onCreated(function() {
                 '<h5 class="text-primary">Fire Unit: '+ fire +' </h5>'+
                 '<h5 class="text-primary">Police Unit: '+ police +' </h5>'+
                 '<h5 class="text-primary">First Aid Unit: '+ hospital +' </h5>'+
+                '<button class="btn btn-outline-warning rFire">I need Fire Unit</button>'+
+                '<button class="btn btn-outline-info rPolice">I need Police Unit</button>'+
+                '<button class="btn btn-outline-danger rHospital">I need Hospital Unit</button>'+
                 // '<button class="btn btn-outline-primary response">Go to this incident</button>'+
               '</div>'+
               '<div class="col-md-6">' +
@@ -128,15 +134,15 @@ Template.Maps.onCreated(function() {
             // toastr.warning("New Incident has been added");
             google.maps.event.addListener(marker, 'click', function(event) {
               // Meteor.call('login.info', marker.id, event.latLng.lat(), event.latLng.lng(), true);
-              let marky = Markers.find({_id: marker.id}).fetch();
+              let marky = Meteor.users.find({_id: marker.id}).fetch();
               infowindow.setContent(
               '<div class="container">'+
               '<div class="row">'+
-                '<div class="col-md-5 offset-md-5">' +
-                  '<h3 class="text-info">Date:</h3>'+
+                '<div class="col-md-12">' +
+                  '<h3 class="text-info">'+ marky[0].profile.lname +', ' + marky[0].profile.fname +'</h3>'+
                 '</div>'+
                 '<div class="col-md-5">' +
-                  '<h3>Ambulance</h3>'+
+                  '<h3>'+ marky[0].roles[1] +'</h3>'+
                 '</div>'+
               '</div>'+
               '</div>');
@@ -167,7 +173,19 @@ Template.Maps.events({
   'click .backup'() {
     markers['rMYEfn3N6ncz3bNde'].icon = '/grn-circle.png'
     Meteor.call('markers.update.icon', 'rMYEfn3N6ncz3bNde', '/grn-circle.png')
-  }
+  },
+  'click .rFire'() {
+    Meteor.call('serverNotification', 'Fire Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
+  'click .rPolice'() {
+    Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
+  'click .rHospital'() {
+    Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
 });
 
 Template.Maps.helpers({
