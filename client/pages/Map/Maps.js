@@ -66,6 +66,7 @@ Template.Maps.onCreated(function() {
             police = ((marky.Police) ? marky.Police.length : 0)
             image = marky.imageUrl
 
+            Session.set('markerId', marker.id);
             Session.set('imageUrl', image);
             Session.set('address', address);
 
@@ -175,14 +176,17 @@ Template.Maps.events({
     Meteor.call('markers.update.icon', 'rMYEfn3N6ncz3bNde', '/grn-circle.png')
   },
   'click .rFire'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'Fire Unit');
     Meteor.call('serverNotification', 'Fire Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
   },
   'click .rPolice'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'Police Unit');
     Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
   },
   'click .rHospital'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'Hospital Unit');
     Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
   },
