@@ -91,7 +91,6 @@ Template.RescueMaps.onCreated(function() {
 
             let marky = Markers.findOne({_id: marker.id});
 
-
             let date, local, address, hospital, image;
             date = newDate(marky.createdAt);
             local = marky.local
@@ -100,7 +99,7 @@ Template.RescueMaps.onCreated(function() {
             fire = ((marky.Fire) ? marky.Fire.length : 0)
             police = ((marky.Police) ? marky.Police.length : 0)
             image = marky.imageUrl
-
+            
             Session.set('lat', marky.lat);
             Session.set('lng', marky.lng);
             Session.set('markerId', marker.id);
@@ -160,7 +159,8 @@ Template.RescueMaps.onCreated(function() {
           markers[document._id] = marker;
         },
         changed: function(newDocument, oldDocument) {
-          markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng, icon: '/blue-dot.png' });
+          markers[newDocument._id].icon = newDocument.icon;
+          markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng, icon: newDocument.icon });
         },
         removed: function(oldDocument) {
           // Remove the marker from the map
@@ -186,7 +186,7 @@ Template.RescueMaps.onCreated(function() {
             icon = '/firstaid.png';
           } else if (type == 'Police') {
             icon = '/police.png';
-          } else if (type == 'Fire Protection') {
+          } else if (type == 'Fire') {
             icon = '/firemen.png';
           }
            var marker = new google.maps.Marker({
@@ -227,7 +227,7 @@ Template.RescueMaps.onCreated(function() {
                   '<h3 class="text-info">'+ marky[0].profile.lname +', ' + marky[0].profile.fname +'</h3>'+
                 '</div>'+
                 '<div class="col-md-5">' +
-                  '<h3>'+ marky[0].roles[1] +'</h3>'+
+                  '<h3>'+ marky[0].roles[1] +' Unit</h3>'+
                 '</div>'+
               '</div>'+
               '</div>');
@@ -332,7 +332,7 @@ Template.RescueMaps.onCreated(function() {
 
 Template.RescueMaps.events({
   'click .response'() {
-    Meteor.call('markers.rescue', Session.get('markerId'), Meteor.userId(), Meteor.user().roles[1])
+    
 
     let from = new google.maps.LatLng(Geolocation.latLng());
     let to = new google.maps.LatLng(Session.get('lat'), Session.get('lng'));
@@ -347,6 +347,8 @@ Template.RescueMaps.events({
         directionsDisplay.setDirections(response);
         infowindow.close();
         Meteor.call('directionsList', Meteor.userId(), {lt:Meteor.user().lat, lg:Meteor.user().lng, lat: Session.get('lat'), lng:Session.get('lng')});
+        Meteor.call('markers.rescue', Session.get('markerId'), Meteor.userId(), Meteor.user().roles[1])
+        Meteor.call('markers.update.icon', Session.get('markerId'), '/grn-circle.png')
       }
     });
 
@@ -362,16 +364,19 @@ Template.RescueMaps.events({
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Fire Unit');
     Meteor.call('serverNotification', 'Fire Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/red-circle.png')
   },
   'click .rPolice'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Police Unit');
     Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/red-circle.png')
   },
   'click .rHospital'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Hospital Unit');
     Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/red-circle.png')
   },
 });
 

@@ -97,7 +97,8 @@ Template.Maps.onCreated(function() {
           markers[document._id] = marker;
         },
         changed: function(newDocument, oldDocument) {
-          markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng, icon: '/blue-dot.png' });
+          markers[newDocument._id].icon = newDocument.icon;
+          markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng, icon: newDocument.icon });
         },
         removed: function(oldDocument) {
           // Remove the marker from the map
@@ -121,7 +122,7 @@ Template.Maps.onCreated(function() {
             icon = '/firstaid.png';
           } else if (type == 'Police') {
             icon = '/police.png';
-          } else if (type == 'Fire Protection') {
+          } else if (type == 'Fire') {
             icon = '/firemen.png';
           }
            var marker = new google.maps.Marker({
@@ -142,8 +143,8 @@ Template.Maps.onCreated(function() {
                 '<div class="col-md-12">' +
                   '<h3 class="text-info">'+ marky[0].profile.lname +', ' + marky[0].profile.fname +'</h3>'+
                 '</div>'+
-                '<div class="col-md-5">' +
-                  '<h3>'+ marky[0].roles[1] +'</h3>'+
+                '<div class="col-md-10">' +
+                  '<h3>'+ marky[0].roles[1] +' Unit</h3>'+
                 '</div>'+
               '</div>'+
               '</div>');
@@ -171,24 +172,23 @@ Template.Maps.onCreated(function() {
   });
 
 Template.Maps.events({
-  'click .backup'() {
-    markers['rMYEfn3N6ncz3bNde'].icon = '/grn-circle.png'
-    Meteor.call('markers.update.icon', 'rMYEfn3N6ncz3bNde', '/grn-circle.png')
-  },
   'click .rFire'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Fire Unit');
     Meteor.call('serverNotification', 'Fire Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/red-circle.png')
   },
   'click .rPolice'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Police Unit');
     Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/red-circle.png')
   },
   'click .rHospital'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Hospital Unit');
     Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/red-circle.png')
   },
 });
 
