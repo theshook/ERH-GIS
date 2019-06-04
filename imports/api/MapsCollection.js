@@ -16,17 +16,35 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'markers.insert' (lat, lng, imageUrl, city, address, rescue) {
+  'markers.insert' (userId, lat, lng, imageUrl, city, address, rescue) {
     Markers.insert({
       lat: lat,
       lng: lng,
-      userId: '',
+      userId: userId,
       local: city,
+      respondent:[city],
       address: address,
       imageUrl: imageUrl,
       icon: '/red-circle.png',
       incidentType: [rescue],
       createdAt: new Date
+    });
+  },
+  'markers.sendHelp'(id, local, icon) {
+    Markers.update(id, {
+      $set: {icon: icon, help: local},
+      $addToSet: {
+        'respondent': local
+      }
+    });
+  },
+  'markers.sendBackup'(id, local, icon) {
+    Markers.update(id, {
+      $set: {icon: icon},
+      $addToSet: {
+        'respondent': local,
+        'backup': local
+      }
     });
   },
   'markers.update' (id, lat, lng) {
@@ -51,31 +69,64 @@ Meteor.methods({
       }
     });
   },
-  'markers.rescue'(id, userId, unit){
+  'markers.responded'(id) {
+    Markers.update(id, {$set: {status: 'Responded'}});
+  },
+  'markers.arrive'(id, userId, unit, icon){
+    if(unit == 'Hospital') {
+      Markers.update(
+        {_id: id, "Hospital.userId":userId},
+        {$set: {"Hospital.$.status": 'Arrived', icon:icon}}  
+      )
+    } else if(unit == 'Fire') {
+      Markers.update(
+        {_id: id, "Fire.userId":userId},
+        {$set: {"Fire.$.status": 'Arrived', icon:icon}}  
+      )
+    } else if(unit == 'Police') {
+      Markers.update(
+        {_id: id, "Police.userId":userId},
+        {$set: {"Police.$.status": 'Arrived', icon:icon}}  
+      )
+    }
+  },
+  'markers.rescue'(id, userId, name, local, unit, icon){
     if (unit == 'Hospital') {
-      Markers.update(
-        id, {
-          $addToSet: {
-            'Hospital': userId
-          }
-        }
-      );
-    } else if(unit == 'Fire Protection'){
-      Markers.update(
-        id, {
-          $addToSet: {
-            'Fire': userId
-          }
-        }
-      );
+      let a = Markers.findOne({$and:[{_id: id}, {'Hospital': {$exists: true}}]});
+
+      if(a==undefined) {
+        Markers.update(id, 
+          {$set: {icon: icon}, 
+            $addToSet: {
+              'Hospital': {userId, name, local, 'status': 'Going'}
+            }
+          });
+      }
+
+    } else if(unit == 'Fire'){
+      let a = Markers.findOne({$and:[{_id: id}, {'Fire': {$exists: true}}]});
+
+      if(a==undefined) {
+        Markers.update(id,
+          {$set: {icon: icon}, 
+            $addToSet: {
+              'Fire': {userId, name, local, 'status': 'Going'}
+            }
+          });
+      }
+
     } else if (unit == 'Police') {
-      Markers.update(
-        id, {
+      let a = Markers.findOne({$and:[{_id: id}, {'Police': {$exists: true}}]});
+
+      if(a==undefined) {
+      Markers.update(id,
+        {$set: {icon: icon},  
           $addToSet: {
-            'Police': userId
+            'Police': {userId, name, local, 'status': 'Going'}
           }
-        }
-      );
+        });
+      }
+
     }
   },
   'markers.remove.rescue'(id, userId, unit){

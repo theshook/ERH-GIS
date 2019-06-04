@@ -124,5 +124,14 @@ Meteor.methods({
     } catch(e) {
       console.log(e);
     }
+  },
+  'users.location'(id, lat, lng) {
+    Meteor.users.update(id, 
+      { 
+        $set: { 
+          lat, lng
+        }
+      }
+    );
   }
 });

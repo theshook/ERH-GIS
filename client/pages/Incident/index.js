@@ -31,23 +31,23 @@ Template.Incidents.helpers({
     let from = Template.instance().state.get( 'from' );
     let to = Template.instance().state.get( 'to' );
     if(from == null || to == null || from == '' || to == '') {
-      return Markers.find({});
+      return Markers.find({respondent: Meteor.user().profile.local}, {sort: {createdAt: -1}});
     } else {
-      return Markers.find({'createdAt': {
-        '$gte': new Date(from),
-        '$lte': new Date(to)
-      }
-      });
+      return Markers.find({$and: [
+          {respondent: Meteor.user().profile.local}, 
+          {'createdAt': {'$gte': new Date(from),'$lte': new Date(to)}}
+        ]
+      }, {sort: {createdAt: -1}});
     }
   },
   hospital: function () {
-    return ((this.Hospital) ? this.Hospital.length : 0)
+    return ((this.Hospital) ? this.Hospital : 0)
   },
   police: function () {
-    return ((this.Police) ? this.Police.length : 0)
+    return ((this.Police) ? this.Police : 0)
   },
   fire: function () {
-    return ((this.Fire) ? this.Fire.length : 0)
+    return ((this.Fire) ? this.Fire : 0)
   },
   date: function() {
     return newDate(this.createdAt);

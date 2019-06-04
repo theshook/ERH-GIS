@@ -44,9 +44,40 @@
               <h6 class="card-title">{{address}}</h6>
             </div>
             <ul class="list-group list-group-flush">
-              <li class="list-group-item">Fire Unit: {{fire}}</li>
-              <li class="list-group-item">Hospital Unit: {{hospital}}</li>
-              <li class="list-group-item">Police Unit: {{police}}</li>
+              <li class="list-group-item">Fire Unit: 
+                {{#if $eq fire 0}}
+                  {{fire}}
+                {{else}}
+                  <ol>
+                      {{#each fire}}
+                        <li>{{name}} - {{local}}</li>
+                      {{/each}}
+                  </ol>
+                {{/if}}
+              </li>
+              <li class="list-group-item">
+                  Hospital Unit:
+                {{#if $eq hospital 0}}
+                  {{hospital}}
+                {{else}}
+                  <ol>
+                      {{#each hospital}}
+                        <li>{{name}} - {{local}}</li>
+                      {{/each}}
+                  </ol>
+                {{/if}}
+              </li>
+              <li class="list-group-item">Police Unit: 
+                {{#if $eq police 0}}
+                  {{police}}
+                {{else}}
+                  <ol>
+                      {{#each police}}
+                        <li>{{name}} - {{local}}</li>
+                      {{/each}}
+                  </ol>
+                {{/if}}
+              </li>
             </ul>
           </div>
         </div>

@@ -30,14 +30,16 @@ Template.CreateUser.events({
     }
 
     if(password!=repassword) {return toastr.warning("Password didn't match.");}
-
+    
+    let record = Meteor.users.find({'emails.address':email}).fetch();
+    
+    if(record.length == 1) {return toastr.warning("User already exists.");}
 
       Meteor.call('createNewUser', {email, password, fname, lname, local, dept, userType},
       function (error, result) {
         if (result) {
-          toastr.success('User succesfully created.');
           event.target.reset();
-          console.log(result);
+          return toastr.success('User succesfully created.');
         } else {
           toastr.warning('There are some error encountered.');
         }

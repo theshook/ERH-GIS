@@ -15,8 +15,9 @@ Meteor.publish('users-rescue-team_collection', function () {
 
     return Meteor.users.find({
       $and: [
-        {'roles': 'Rescue Unit'},
-        {'profile.local': checkRole[0].profile.local}
+        {'roles': 'Rescue Unit'}
+        // ,
+        // {'profile.local': checkRole[0].profile.local}
       ]
     });
   }
