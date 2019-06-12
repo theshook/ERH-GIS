@@ -1,22 +1,31 @@
 <template name="mcitizen">
   <div class="container">
     {{#if currentUser}}
-      <table class="table">
-        <tbody>
-          {{#each markers}}
-            <tr>
-              <td><img src="{{imageUrl}}" alt="Img"></td>
-              <td>
-                <h6>{{date}}</h6>
-                <h6>This incident has been taken care of {{interlocal}}.</h6>
-                <h6>{{response}}</h6>
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
+    <table class="table">
+      <tbody>
+        {{#each markers}}
+        <tr>
+          <div class="row  p-3">
+            <div class="col-sm-4">
+              <h6>{{date}}</h6>
+            </div>
+            <div class="col-sm-4">
+              <h6>This incident has been taken care of {{interlocal}}.</h6>
+
+            </div>
+            <div class="col-sm-4">
+              <h6>{{response}}</h6>
+            </div>
+            <div class="col-sm-8">
+              <img class="img-thumbnail" src="{{imageUrl}}" alt="Img">
+            </div>
+          </div>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
     {{else}}
-      <img class="text-center" src="/loading.gif" alt="Loading">
+    <img class="text-center" src="/loading.gif" alt="Loading">
     {{/if}}
   </div>
 </template>
