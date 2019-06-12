@@ -16,8 +16,8 @@ var infowindow;
 let markerId1;
 
 if (Meteor.isClient) {
-  Meteor.startup(function() {
-    GoogleMaps.load({key: 'AIzaSyCAtwKrWurgTFig4deBs9Kr-k1msKsnHAI'});
+  Meteor.startup(function () {
+    GoogleMaps.load({ key: 'AIzaSyCAtwKrWurgTFig4deBs9Kr-k1msKsnHAI' });
   });
 }
 
@@ -29,11 +29,11 @@ newDate = function (val) {
   }
 }
 
-var rad = function(x) {
+var rad = function (x) {
   return x * Math.PI / 180;
 };
 
-var getDistance = function(p1, p2) {
+var getDistance = function (p1, p2) {
   var R = 6378137; // Earth’s mean radius in meter
   var dLat = rad(p2.lat() - p1.lat());
   var dLong = rad(p2.lng() - p1.lng());
@@ -45,44 +45,44 @@ var getDistance = function(p1, p2) {
   return d; // returns the distance in meter
 };
 
-Template.RescueMaps.onCreated(function() {
+Template.RescueMaps.onCreated(function () {
   var self = this;
   Meteor.subscribe('markers_collection');
   Meteor.subscribe('users-rescue-team_collection');
 
   // let user = Meteor.users.find({_id: Meteor.userId()}).fetch();
-  
-  GoogleMaps.ready('map', function(map) {
+
+  GoogleMaps.ready('map', function (map) {
     directionsService = new google.maps.DirectionsService();
-    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
     directionsDisplay.setMap(map.instance);
     // Get users location
     // Create and move the marker when latLng changes.
-    self.autorun(function() {
+    self.autorun(function () {
       var latLng = Geolocation.latLng();
-        if (latLng) {
-          Meteor.call('login.info', Meteor.userId(), latLng.lat, latLng.lng, true);
-        }      
+      if (latLng) {
+        Meteor.call('login.info', Meteor.userId(), latLng.lat, latLng.lng, true);
+      }
     });
-      
+
     // Legend();
     // map.instance.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
-    google.maps.event.addListener(map.instance, 'click', function(event) {
+    google.maps.event.addListener(map.instance, 'click', function (event) {
       // Meteor.call('markers.insert', {lat: event.latLng.lat(), lng: event.latLng.lng()});
     });
 
     // The code shown below goes here
-    infowindow = new google.maps.InfoWindow({maxWidth: 300});
+    infowindow = new google.maps.InfoWindow({ maxWidth: 300 });
     var markers = {};
-    let type = Meteor.user().roles[1] +" Unit"
+    let type = Meteor.user().roles[1] + " Unit"
 
     // START
-    Markers.find({ $and: [{incidentType: type}, {respondent: Meteor.user().profile.local}]}).observe({
+    Markers.find({ $and: [{ incidentType: type }, { respondent: Meteor.user().profile.local }] }).observe({
       added: function (document) {
 
         var marker = new google.maps.Marker({
-          draggable: false, 
+          draggable: false,
           animation: google.maps.Animation.DROP,
           position: new google.maps.LatLng(document.lat, document.lng),
           map: map.instance,
@@ -91,12 +91,12 @@ Template.RescueMaps.onCreated(function() {
         });
 
         // toastr.warning("New Incident has been added");
-        google.maps.event.addListener(marker, 'click', function(event) {
-        // Meteor.call('markers.update', marker.id, {lat: event.latLng.lat(), lng: event.latLng.lng()});
+        google.maps.event.addListener(marker, 'click', function (event) {
+          // Meteor.call('markers.update', marker.id, {lat: event.latLng.lat(), lng: event.latLng.lng()});
           let userDept = Meteor.user().roles[1];
           let userId = Meteor.userId();
 
-          let marky = Markers.findOne({_id: marker.id});
+          let marky = Markers.findOne({ _id: marker.id });
 
           let date, local, address, hospital, image, help, backup;
           date = newDate(marky.createdAt);
@@ -109,7 +109,7 @@ Template.RescueMaps.onCreated(function() {
 
           help = ((marky.help) ? marky.help : 'None')
           backup = ((marky.backup) ? marky.backup : 'None')
-          
+
           Session.set('lat', marky.lat);
           Session.set('lng', marky.lng);
           Session.set('markerId', marker.id);
@@ -119,14 +119,14 @@ Template.RescueMaps.onCreated(function() {
 
           let response = '';
           let rescueUnit = '';
-          
+
           if (help == Meteor.user().profile.local) {
             response = '<button class="btn float-left btn-outline-primary response">Go to this incident</button><br>';
             rescueUnit = '<button class="btn float-left btn-outline-warning rFire">I need Fire Unit</button><br><button class="btn float-left btn-outline-info rPolice">I need Police Unit</button><br><button class="btn float-left btn-outline-danger rHospital">I need Hospital Unit</button><br>';
           } else if (backup.length >= 1) {
 
-            for(var i = 0; i < backup.length; i++) {
-              
+            for (var i = 0; i < backup.length; i++) {
+
               if (backup[i] == Meteor.user().profile.local || help != 'None') {
                 response = '<button class="btn float-left btn-outline-primary response">Go to this incident</button><br>';
                 rescueUnit = '';
@@ -139,27 +139,27 @@ Template.RescueMaps.onCreated(function() {
           }
 
           infowindow.setContent(
-            '<div class="container">'+
-              '<div class="row align-items-start">'+
-                '<div class="col-md-12">' +
-                  '<h4 class="text-info">Date: '+ date +'</h4>'+
-                  '<h6 class="text-info text-justify text-left">Local: '+ local +'</h6>'+
-                  '<h6 class="text-info text-left">Address: '+ address +'</h6>'+
-                  '<h6 class="text-left">Help Unit: '+ help +'</h5>'+
-                  '<h6 class="text-left">Backup Unit: '+ backup +'</h5>'+
-                  '<h6 class="text-primary text-left">Rescue Unit will go</h6>'+
-                  '<h6 class="text-primary text-left">Fire Unit: '+ fire +' </h6>'+
-                  '<h6 class="text-primary text-left">Police Unit: '+ police +' </h6>'+
-                  '<h6 class="text-primary text-left">First Aid Unit: '+ hospital +' </h6>'+
-                '</div>'+
-                '<div class="col-md-12">' +
-                  response+
-                  rescueUnit+
-                '</div>'+
-                '<div class="col-md-12">' +
-                  '<img src="' + image + '" class="float-left" height="250" width="250"/>'+
-                '</div>'+
-              '</div>'+
+            '<div class="container">' +
+            '<div class="row align-items-start">' +
+            '<div class="col-md-12">' +
+            '<h4 class="text-info">Date: ' + date + '</h4>' +
+            '<h6 class="text-info text-justify text-left">Local: ' + local + '</h6>' +
+            '<h6 class="text-info text-left">Address: ' + address + '</h6>' +
+            '<h6 class="text-left">Help Unit: ' + help + '</h5>' +
+            '<h6 class="text-left">Backup Unit: ' + backup + '</h5>' +
+            '<h6 class="text-primary text-left">Rescue Unit will go</h6>' +
+            '<h6 class="text-primary text-left">Fire Unit: ' + fire + ' </h6>' +
+            '<h6 class="text-primary text-left">Police Unit: ' + police + ' </h6>' +
+            '<h6 class="text-primary text-left">First Aid Unit: ' + hospital + ' </h6>' +
+            '</div>' +
+            '<div class="col-md-12">' +
+            response +
+            rescueUnit +
+            '</div>' +
+            '<div class="col-md-12">' +
+            '<img src="' + image + '" class="float-left" height="250" width="250"/>' +
+            '</div>' +
+            '</div>' +
             '</div>'
           );
 
@@ -167,10 +167,10 @@ Template.RescueMaps.onCreated(function() {
         });
         markers[document._id] = marker;
       },
-      changed: function(newDocument, oldDocument) {
+      changed: function (newDocument, oldDocument) {
         markers[newDocument._id].setIcon(newDocument.icon);
       },
-      removed: function(oldDocument) {
+      removed: function (oldDocument) {
         // Remove the marker from the map
         markers[oldDocument._id].setMap(null);
 
@@ -184,7 +184,7 @@ Template.RescueMaps.onCreated(function() {
     });
     // END      
 
-    Meteor.users.find({status: true}).observe({
+    Meteor.users.find({ status: true }).observe({
       added: function (document) {
         let icon;
         let type = document.roles[1];
@@ -198,7 +198,7 @@ Template.RescueMaps.onCreated(function() {
           icon = '/firemen.png';
         }
         var marker = new google.maps.Marker({
-        draggable: true,
+          draggable: false,
           animation: google.maps.Animation.DROP,
           position: new google.maps.LatLng(document.lat, document.lng),
           map: map.instance,
@@ -215,7 +215,7 @@ Template.RescueMaps.onCreated(function() {
             travelMode: "DRIVING",
           };
 
-          directionsService.route(request, function(response, status) {
+          directionsService.route(request, function (response, status) {
             if (status == 'OK') {
               directionsDisplay.setDirections(response);
               infowindow.close();
@@ -225,26 +225,26 @@ Template.RescueMaps.onCreated(function() {
         }
 
         // toastr.warning("New Incident has been added");
-        google.maps.event.addListener(marker, 'click', function(event) {
+        google.maps.event.addListener(marker, 'click', function (event) {
           // Meteor.call('login.info', marker.id, event.latLng.lat(), event.latLng.lng(), true);
-          let marky = Meteor.users.find({_id: marker.id}).fetch();
+          let marky = Meteor.users.find({ _id: marker.id }).fetch();
           infowindow.setContent(
-            '<h3 class="text-info">'+ marky[0].profile.lname +', ' + marky[0].profile.fname +'</h3>'+
-            '<h3>'+ marky[0].profile.local +'</h3>'+
-            '<h3>'+ marky[0].roles[1] +' Unit</h3>'
-            );
+            '<h3 class="text-info">' + marky[0].profile.lname + ', ' + marky[0].profile.fname + '</h3>' +
+            '<h3>' + marky[0].profile.local + '</h3>' +
+            '<h3>' + marky[0].roles[1] + ' Unit</h3>'
+          );
           infowindow.open(map, marker);
           console.log(marker.id)
         });
-          
-        google.maps.event.addListener(marker, 'dragend', function(event) {
-          Meteor.call('users.location',marker.id, event.latLng.lat(), event.latLng.lng())
+
+        google.maps.event.addListener(marker, 'dragend', function (event) {
+          Meteor.call('users.location', marker.id, event.latLng.lat(), event.latLng.lng())
         });
-          
+
         markers[document._id] = marker;
       },
-      changed: function(newDocument, oldDocument) {
-        markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng});
+      changed: function (newDocument, oldDocument) {
+        markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng });
         if (Meteor.userId() === newDocument._id) {
           let from = new google.maps.LatLng(newDocument.lat, newDocument.lng);
           let to = new google.maps.LatLng(newDocument.directions.destination.lat, newDocument.directions.destination.lng);
@@ -254,14 +254,14 @@ Template.RescueMaps.onCreated(function() {
             travelMode: "DRIVING",
           };
 
-          directionsService.route(request, function(response, status) {
+          directionsService.route(request, function (response, status) {
             if (status == 'OK') {
               let distance = response.routes[0].legs[0].distance.value;
               directionsDisplay.setDirections(response);
               infowindow.close();
               directions[newDocument._id] = request;
-              Meteor.call('directionsList', Meteor.userId(), {lt:Meteor.user().lat, lg:Meteor.user().lng, lat: newDocument.directions.destination.lat, lng:newDocument.directions.destination.lng});
-              if(distance<=30) {
+              Meteor.call('directionsList', Meteor.userId(), { lt: Meteor.user().lat, lg: Meteor.user().lng, lat: newDocument.directions.destination.lat, lng: newDocument.directions.destination.lng });
+              if (distance <= 30) {
                 console.log('Okay!')
                 Meteor.call('markers.arrive', markerId1, Meteor.userId(), Meteor.user().roles[1], '/grn-circle.png');
               }
@@ -269,7 +269,7 @@ Template.RescueMaps.onCreated(function() {
           });
         }
       },
-      removed: function(oldDocument) {
+      removed: function (oldDocument) {
         // Remove the marker from the map
         markers[oldDocument._id].setMap(null);
 
@@ -315,14 +315,14 @@ Template.RescueMaps.onCreated(function() {
       // Set up the click event listener for 'Center Map': Set the center of
       // the map
       // to the current center of the control.
-      goCenterUI.addEventListener('click', function() {
+      goCenterUI.addEventListener('click', function () {
         map.instance.setCenter(Geolocation.latLng());
       });
 
       // Set up the click event listener for 'Set Center': Set the center of
       // the control to the current center of the map.
-      setCenterUI.addEventListener('click', function() {
-        directionsDisplay.setDirections({routes: []});
+      setCenterUI.addEventListener('click', function () {
+        directionsDisplay.setDirections({ routes: [] });
         Meteor.call('directionsList', Meteor.userId(), {});
       });
     }
@@ -349,17 +349,17 @@ Template.RescueMaps.events({
       travelMode: "DRIVING",
     };
 
-    directionsService.route(request, function(response, status) {
+    directionsService.route(request, function (response, status) {
       if (status == 'OK') {
         directionsDisplay.setDirections(response);
         infowindow.close();
-        Meteor.call('directionsList', Meteor.userId(), {lt:Meteor.user().lat, lg:Meteor.user().lng, lat: Session.get('lat'), lng:Session.get('lng')});
-        Meteor.call('markers.rescue', 
-          Session.get('markerId'), 
+        Meteor.call('directionsList', Meteor.userId(), { lt: Meteor.user().lat, lg: Meteor.user().lng, lat: Session.get('lat'), lng: Session.get('lng') });
+        Meteor.call('markers.rescue',
+          Session.get('markerId'),
           Meteor.userId(),
-          Meteor.user().profile.lname + ", "+ Meteor.user().profile.fname,
+          Meteor.user().profile.lname + ", " + Meteor.user().profile.fname,
           Meteor.user().profile.local,
-          Meteor.user().roles[1], 
+          Meteor.user().roles[1],
           '/backup.png');
         markerId1 = Session.get('markerId');
       }
@@ -368,7 +368,7 @@ Template.RescueMaps.events({
     infowindow.close();
   },
   'click .unresponse'() {
-    directionsDisplay.setDirections({routes: []});
+    directionsDisplay.setDirections({ routes: [] });
     Meteor.call('directionsList', Meteor.userId(), {});
     Meteor.call('markers.remove.rescue', Session.get('markerId'), Meteor.userId(), Meteor.user().roles[1])
     infowindow.close();
@@ -394,11 +394,11 @@ Template.RescueMaps.events({
 });
 
 Template.RescueMaps.helpers({
-  geolocationError: function() {
+  geolocationError: function () {
     var error = Geolocation.error();
     return error && error.message;
   },
-  mapOptions: function() {
+  mapOptions: function () {
     var latLng = Geolocation.latLng();
     // Initialize the map once we have the latLng.
     if (GoogleMaps.loaded() && latLng) {
