@@ -1,18 +1,20 @@
 <template name="Header">
   <header class="header fixed-top">
     {{#unless currentUser}}
-    <h4 class="site-title"><a href="/">ERDSS</a>
+    <h4 class="site-title">
+      <a href="/">Emergency Response Decision Support System</a>
     </h4>
-    {{else}}
-    {{#unless isInRole 'Admin'}}
-    <h2 class="site-title">ERDSS</h2>
+    {{else}} {{#unless isInRole 'Admin'}}
+    <h2 class="site-title">Emergency Response Decision Support System</h2>
     <h6 class="site-title">{{currentUser.profile.fname}}</h6>
-    <h6 class="site-title logout"><a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a></h6>
+    <h6 class="site-title logout">
+      <a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a>
+    </h6>
     {{else}}
     <h4 class="site-title p-1">
       <a href="/dashboard">
-        <img src="/logo.png" height="32px" width="32px" alt="ipanema">
-        ERDSS for the Province of Pangasinan
+        <img src="/logo.png" height="32px" width="32px" alt="ipanema" />
+        Emergency Response Decision Support System
       </a>
     </h4>
     <h4 class="site-title">{{currentUser.profile.fname}}</h4>
