@@ -1,25 +1,40 @@
 <template name="Header">
-  <header class="header fixed-top">
-    {{#unless currentUser}}
-    <h4 class="site-title">
-      <a href="/">Emergency Response Decision Support System</a>
-    </h4>
-    {{else}} {{#unless isInRole 'Admin'}}
-    <h2 class="site-title">Emergency Response Decision Support System</h2>
-    <h6 class="site-title">{{currentUser.profile.fname}}</h6>
-    <h6 class="site-title logout">
-      <a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a>
-    </h6>
-    {{else}}
-    <h4 class="site-title p-1">
-      <a href="/dashboard">
-        <img src="/logo.png" height="32px" width="32px" alt="ipanema" />
-        Emergency Response Decision Support System
-      </a>
-    </h4>
-    <h4 class="site-title">{{currentUser.profile.fname}}</h4>
-    {{/unless}}
-    <!-- {{currentUser.roles.[0]}} -->
-    {{/unless}}
-  </header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light header fixed-top">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarTogglerDemo01"
+      aria-controls="navbarTogglerDemo01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+      {{#unless currentUser}}
+      <a class="navbar-brand" href="/"
+        ><strong>Emergency Response Decision Support System</strong></a
+      >
+      {{else}} {{#unless isInRole 'Admin'}}
+      <h2 class="site-title navbar-brand">
+        <strong>Emergency Response Decision Support System</strong>
+      </h2>
+      <h6 class="site-title ml-auto">{{currentUser.profile.fname}}</h6>
+      <h6 class="site-title  ml-auto logout">
+        <a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a>
+      </h6>
+      {{else}}
+      <h4 class="site-title p-1">
+        <a href="/dashboard">
+          <img src="/logo.png" height="32px" width="32px" alt="ipanema" />
+          <strong>Emergency Response Decision Support System</strong>
+        </a>
+      </h4>
+      <h4 class="site-title ml-auto">{{currentUser.profile.fname}}</h4>
+      {{/unless}}
+      <!-- {{currentUser.roles.[0]}} -->
+      {{/unless}}
+    </div>
+  </nav>
 </template>

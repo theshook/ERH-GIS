@@ -13,18 +13,18 @@ Meteor.methods({
       Roles.addUsersToRoles(id, 'admin');
     }
   },
-  'rstPassword'(id, password) {
+  rstPassword(id, password) {
     Accounts.setPassword(id, password);
   },
-  'createNewUser'(user) {
-    try{
+  createNewUser(user) {
+    try {
       var id = Accounts.createUser({
         email: user.email,
         password: user.password,
         profile: {
           fname: user.fname,
           lname: user.lname,
-          local: user.local,
+          local: user.local
         }
       });
 
@@ -35,45 +35,47 @@ Meteor.methods({
           plate: '',
           lat: '',
           long: '',
-          createdAt: new Date(),
+          createdAt: new Date()
         });
       }
 
       Roles.addUsersToRoles(id, [user.userType, user.dept]);
       return 'User succesfully created';
-    } catch(e) {
+    } catch (e) {
       return 'There are some error encountered.';
     }
   },
-  'UpdateUser'(id, user) {
-    try{
+  UpdateUser(id, user) {
+    try {
       const newProfile = {
         fname: user.fname,
         lname: user.lname,
         local: user.local
-      }
+      };
+      Meteor.users.update(id, {
+        $set: {
+          'emails.0.address': user.email,
+          profile: newProfile
+        }
+      });
+
+      if (user.userType == 'Rescue Unit') {
+        const newProfile = {
+          fname: user.fname,
+          lname: user.lname,
+          local: user.local,
+          plate: user.plate
+        };
         Meteor.users.update(id, {
           $set: {
-            'emails.0.address': user.email,
             profile: newProfile
-        }});
-
-        if (user.userType == 'Rescue Unit') {
-          const newProfile = {
-            fname: user.fname,
-            lname: user.lname,
-            local: user.local,
-            plate: user.plate
           }
-          Meteor.users.update(id, {
-            $set: {
-              profile : newProfile
-            }});
-        }
+        });
+      }
 
       Roles.setUserRoles(id, [user.userType, user.dept]);
       return 'User succesfully updated';
-    } catch(e) {
+    } catch (e) {
       return e;
     }
   },
@@ -87,10 +89,10 @@ Meteor.methods({
           status: status,
           lat,
           lng
-          
-      }});
-    } catch(e) {
-      console.log(e);
+        }
+      });
+    } catch (e) {
+      console.warn(e);
     }
   },
   'user.status'(id, stats) {
@@ -101,37 +103,37 @@ Meteor.methods({
       }
     });
   },
-  'going'(id, status) {
+  going(id, status) {
     try {
       Meteor.users.update(id, {
         $set: {
-          going: status,         
-      }});
-    } catch(e) {
-      console.log(e);
-    }
-  },
-  'directionsList'(id, directions) {
-    try {
-      Meteor.users.update(id, {
-        $set: {
-          directions: 
-          {origin: {lat: directions.lt, lng: directions.lg},
-          destination: {lat: directions.lat, lng: directions.lng}}
-          
+          going: status
         }
       });
-    } catch(e) {
-      console.log(e);
+    } catch (e) {
+      console.warn(e);
+    }
+  },
+  directionsList(id, directions) {
+    try {
+      Meteor.users.update(id, {
+        $set: {
+          directions: {
+            origin: { lat: directions.lt, lng: directions.lg },
+            destination: { lat: directions.lat, lng: directions.lng }
+          }
+        }
+      });
+    } catch (e) {
+      console.warn(e);
     }
   },
   'users.location'(id, lat, lng) {
-    Meteor.users.update(id, 
-      { 
-        $set: { 
-          lat, lng
-        }
+    Meteor.users.update(id, {
+      $set: {
+        lat,
+        lng
       }
-    );
+    });
   }
 });
