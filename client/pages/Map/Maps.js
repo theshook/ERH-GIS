@@ -135,7 +135,7 @@ Template.Maps.onCreated(function () {
               '</div>';
 
             buttons =
-              '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
+              '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><br><button class="btn float-left btn-outline-primary drrm">I need DRRM</button><br><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
           } else if (backup.length != 1) {
             for (var i = 0; i < backup.length; i++) {
               if (backup[i] == Meteor.user().profile.local || help != 'None') {
@@ -203,7 +203,7 @@ Template.Maps.onCreated(function () {
                   '</div>';
 
                 buttons =
-                  '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
+                  '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><br><button class="btn float-left btn-outline-primary drrm">I need DRRM</button><br><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
               }
             }
           }
@@ -377,6 +377,21 @@ Template.Maps.events({
       'markers.update.icon',
       Session.get('markerId'),
       '/ineedfirstaid.png'
+    );
+  },
+  'click .drrm'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'DRRM Unit');
+    Meteor.call(
+      'serverNotification',
+      'DRRM Unit',
+      Session.get('address'),
+      Session.get('imageUrl')
+    );
+    toastr.success('Succesfully send');
+    Meteor.call(
+      'markers.update.icon',
+      Session.get('markerId'),
+      '/drrm-marker.png'
     );
   },
   'click .request'() {

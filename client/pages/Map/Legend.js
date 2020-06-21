@@ -28,6 +28,10 @@ export default function () {
       name: 'Requesting Police',
       icon: '/ineedpolice.png',
     },
+    drrmmarker: {
+      name: 'Requesting DRRM',
+      icon: '/drrm-marker.png',
+    },
     nhelp: {
       name: 'Need Help/Backup',
       icon: '/needhelp.svg',

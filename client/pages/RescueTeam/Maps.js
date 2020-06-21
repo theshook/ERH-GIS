@@ -139,7 +139,7 @@ Template.RescueMaps.onCreated(function () {
             response =
               '<button class="btn float-left btn-outline-primary response">Go to this incident</button><br>';
             rescueUnit =
-              '<button class="btn float-left btn-outline-warning rFire">I need Fire Unit</button><br><button class="btn float-left btn-outline-info rPolice">I need Police Unit</button><br><button class="btn float-left btn-outline-danger rHospital">I need Hospital Unit</button><br>';
+              '<button class="btn float-left btn-outline-warning rFire">I need Fire Unit</button><br><button class="btn float-left btn-outline-info rPolice">I need Police Unit</button><br><button class="btn float-left btn-outline-danger rHospital">I need Hospital Unit</button><br>button><br><button class="btn float-left btn-outline-primary drrm">I need DRRM</button><br>';
           } else if (backup.length >= 1) {
             for (var i = 0; i < backup.length; i++) {
               if (backup[i] == Meteor.user().profile.local || help != 'None') {
@@ -151,7 +151,7 @@ Template.RescueMaps.onCreated(function () {
                 response =
                   '<button class="btn float-left btn-outline-primary response">Go to this incident</button><br>';
                 rescueUnit =
-                  '<button class="btn float-left btn-outline-warning rFire">I need Fire Unit</button><br><button class="btn float-left btn-outline-info rPolice">I need Police Unit</button><br><button class="btn float-left btn-outline-danger rHospital">I need Hospital Unit</button><br>';
+                  '<button class="btn float-left btn-outline-warning rFire">I need Fire Unit</button><br><button class="btn float-left btn-outline-info rPolice">I need Police Unit</button><br><button class="btn float-left btn-outline-danger rHospital">I need Hospital Unit</button><br><button class="btn float-left btn-outline-primary drrm">I need DRRM</button><br>';
               }
             }
           }
@@ -469,6 +469,16 @@ Template.RescueMaps.events({
       '/ineedpolice.png'
     );
     // Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
+    toastr.success('Succesfully send');
+  },
+  'click .drrm'() {
+    Meteor.call('markers.addRescue', Session.get('markerId'), 'DRRM Unit');
+    Meteor.call(
+      'markers.update.icon',
+      Session.get('markerId'),
+      '/drrm-marker.png'
+    );
+    //Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
   },
   'click .rHospital'() {
