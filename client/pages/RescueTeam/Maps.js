@@ -120,6 +120,7 @@ Template.RescueMaps.onCreated(function () {
           hospital = marky.Hospital ? marky.Hospital.length : 0;
           fire = marky.Fire ? marky.Fire.length : 0;
           police = marky.Police ? marky.Police.length : 0;
+          drrm = marky.Drrm ? marky.Drrm.length : 0;
           image = marky.imageUrl;
 
           help = marky.help ? marky.help : 'None';
@@ -184,6 +185,9 @@ Template.RescueMaps.onCreated(function () {
               ' </h6>' +
               '<h6 class="text-primary text-left">First Aid Unit: ' +
               hospital +
+              ' </h6>' +
+              '<h6 class="text-primary text-left">DRRM Unit: ' +
+              drrm +
               ' </h6>' +
               '</div>' +
               '<div class="col-md-12">' +

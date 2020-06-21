@@ -62,6 +62,7 @@ Template.Maps.onCreated(function () {
           hospital = marky.Hospital ? marky.Hospital.length : 0;
           fire = marky.Fire ? marky.Fire.length : 0;
           police = marky.Police ? marky.Police.length : 0;
+          drrm = marky.Drrm ? marky.Drrm.length : 0;
           image = marky.imageUrl;
           respondent = marky.respondent;
           help = marky.help ? marky.help : 'None';
@@ -239,6 +240,9 @@ Template.Maps.onCreated(function () {
               ' </h5>' +
               '<h5 class="text-primary">First Aid Unit: ' +
               hospital +
+              ' </h5>' +
+              '<h5 class="text-primary text-left">DRRM Unit: ' +
+              drrm +
               ' </h5>' +
               buttons +
               '</div>' +
