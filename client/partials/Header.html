@@ -20,10 +20,17 @@
       <h2 class="site-title navbar-brand">
         <strong>Emergency Response Decision Support System</strong>
       </h2>
-      <h6 class="site-title ml-auto">{{currentUser.profile.fname}}</h6>
-      <h6 class="site-title  ml-auto logout">
-        <a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a>
-      </h6>
+      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <h6 class="site-title ml-auto">{{currentUser.profile.fname}}</h6>
+        </li>
+        <li class="nav-item">
+          <h6 class="site-title  ml-auto logout">
+            <a href="#"><i class="fa fa-sign-out"></i><span>Signout</span></a>
+          </h6>
+        </li>
+      </ul>
+
       {{else}}
       <h4 class="site-title p-1">
         <a href="/dashboard">
