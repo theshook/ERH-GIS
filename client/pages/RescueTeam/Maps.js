@@ -16,12 +16,12 @@ var infowindow;
 let markerId1;
 
 if (Meteor.isClient) {
-  Meteor.startup(function() {
+  Meteor.startup(function () {
     GoogleMaps.load({ key: 'AIzaSyCAtwKrWurgTFig4deBs9Kr-k1msKsnHAI' });
   });
 }
 
-newDate = function(val) {
+newDate = function (val) {
   if (val instanceof Date) {
     return moment(val).calendar();
   } else {
@@ -29,11 +29,11 @@ newDate = function(val) {
   }
 };
 
-var rad = function(x) {
+var rad = function (x) {
   return (x * Math.PI) / 180;
 };
 
-var getDistance = function(p1, p2) {
+var getDistance = function (p1, p2) {
   var R = 6378137; // Earth’s mean radius in meter
   var dLat = rad(p2.lat() - p1.lat());
   var dLong = rad(p2.lng() - p1.lng());
@@ -48,22 +48,22 @@ var getDistance = function(p1, p2) {
   return d; // returns the distance in meter
 };
 
-Template.RescueMaps.onCreated(function() {
+Template.RescueMaps.onCreated(function () {
   var self = this;
   Meteor.subscribe('markers_collection');
   Meteor.subscribe('users-rescue-team_collection');
 
   // let user = Meteor.users.find({_id: Meteor.userId()}).fetch();
 
-  GoogleMaps.ready('map', function(map) {
+  GoogleMaps.ready('map', function (map) {
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer({
-      suppressMarkers: true
+      suppressMarkers: true,
     });
     directionsDisplay.setMap(map.instance);
     // Get users location
     // Create and move the marker when latLng changes.
-    self.autorun(function() {
+    self.autorun(function () {
       var latLng = Geolocation.latLng();
       if (latLng) {
         Meteor.call(
@@ -79,7 +79,7 @@ Template.RescueMaps.onCreated(function() {
     // Legend();
     // map.instance.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
-    google.maps.event.addListener(map.instance, 'click', function(event) {
+    google.maps.event.addListener(map.instance, 'click', function (event) {
       // Meteor.call('markers.insert', {lat: event.latLng.lat(), lng: event.latLng.lng()});
     });
 
@@ -92,21 +92,21 @@ Template.RescueMaps.onCreated(function() {
     Markers.find({
       $and: [
         { incidentType: type },
-        { respondent: Meteor.user().profile.local }
-      ]
+        { respondent: Meteor.user().profile.local },
+      ],
     }).observe({
-      added: function(document) {
+      added: function (document) {
         var marker = new google.maps.Marker({
           draggable: false,
           animation: google.maps.Animation.DROP,
           position: new google.maps.LatLng(document.lat, document.lng),
           map: map.instance,
           icon: document.icon,
-          id: document._id
+          id: document._id,
         });
 
         // toastr.warning("New Incident has been added");
-        google.maps.event.addListener(marker, 'click', function(event) {
+        google.maps.event.addListener(marker, 'click', function (event) {
           // Meteor.call('markers.update', marker.id, {lat: event.latLng.lat(), lng: event.latLng.lng()});
           let userDept = Meteor.user().roles[1];
           let userId = Meteor.userId();
@@ -203,10 +203,10 @@ Template.RescueMaps.onCreated(function() {
         });
         markers[document._id] = marker;
       },
-      changed: function(newDocument, oldDocument) {
+      changed: function (newDocument, oldDocument) {
         markers[newDocument._id].setIcon(newDocument.icon);
       },
-      removed: function(oldDocument) {
+      removed: function (oldDocument) {
         // Remove the marker from the map
         markers[oldDocument._id].setMap(null);
 
@@ -215,12 +215,12 @@ Template.RescueMaps.onCreated(function() {
 
         // Remove the reference to this marker instance
         delete markers[oldDocument._id];
-      }
+      },
     });
     // END
 
     Meteor.users.find({ status: true }).observe({
-      added: function(document) {
+      added: function (document) {
         let icon;
         let type = document.roles[1];
         if (Meteor.userId() == document._id) {
@@ -231,6 +231,8 @@ Template.RescueMaps.onCreated(function() {
           icon = '/police.png';
         } else if (type == 'Fire') {
           icon = '/firemen.png';
+        } else if (type == 'DRRM') {
+          icon = '/drrm.png';
         }
         var marker = new google.maps.Marker({
           draggable: false,
@@ -238,7 +240,7 @@ Template.RescueMaps.onCreated(function() {
           position: new google.maps.LatLng(document.lat, document.lng),
           map: map.instance,
           icon: icon,
-          id: document._id
+          id: document._id,
         });
 
         if (Meteor.userId() === document._id) {
@@ -250,10 +252,10 @@ Template.RescueMaps.onCreated(function() {
           var request = {
             origin: from,
             destination: to,
-            travelMode: 'DRIVING'
+            travelMode: 'DRIVING',
           };
 
-          directionsService.route(request, function(response, status) {
+          directionsService.route(request, function (response, status) {
             if (status == 'OK') {
               directionsDisplay.setDirections(response);
               infowindow.close();
@@ -263,7 +265,7 @@ Template.RescueMaps.onCreated(function() {
         }
 
         // toastr.warning("New Incident has been added");
-        google.maps.event.addListener(marker, 'click', function(event) {
+        google.maps.event.addListener(marker, 'click', function (event) {
           // Meteor.call('login.info', marker.id, event.latLng.lat(), event.latLng.lng(), true);
           let marky = Meteor.users.find({ _id: marker.id }).fetch();
           infowindow.setContent(
@@ -283,7 +285,7 @@ Template.RescueMaps.onCreated(function() {
           // console.log(marker.id)
         });
 
-        google.maps.event.addListener(marker, 'dragend', function(event) {
+        google.maps.event.addListener(marker, 'dragend', function (event) {
           Meteor.call(
             'users.location',
             marker.id,
@@ -294,10 +296,10 @@ Template.RescueMaps.onCreated(function() {
 
         markers[document._id] = marker;
       },
-      changed: function(newDocument, oldDocument) {
+      changed: function (newDocument, oldDocument) {
         markers[newDocument._id].setPosition({
           lat: newDocument.lat,
-          lng: newDocument.lng
+          lng: newDocument.lng,
         });
         if (Meteor.userId() === newDocument._id) {
           let from = new google.maps.LatLng(newDocument.lat, newDocument.lng);
@@ -308,10 +310,10 @@ Template.RescueMaps.onCreated(function() {
           var request = {
             origin: from,
             destination: to,
-            travelMode: 'DRIVING'
+            travelMode: 'DRIVING',
           };
 
-          directionsService.route(request, function(response, status) {
+          directionsService.route(request, function (response, status) {
             if (status == 'OK') {
               let distance = response.routes[0].legs[0].distance.value;
               directionsDisplay.setDirections(response);
@@ -321,7 +323,7 @@ Template.RescueMaps.onCreated(function() {
                 lt: Meteor.user().lat,
                 lg: Meteor.user().lng,
                 lat: newDocument.directions.destination.lat,
-                lng: newDocument.directions.destination.lng
+                lng: newDocument.directions.destination.lng,
               });
               if (distance <= 30) {
                 // console.log('Okay!')
@@ -337,7 +339,7 @@ Template.RescueMaps.onCreated(function() {
           });
         }
       },
-      removed: function(oldDocument) {
+      removed: function (oldDocument) {
         // Remove the marker from the map
         markers[oldDocument._id].setMap(null);
 
@@ -346,7 +348,7 @@ Template.RescueMaps.onCreated(function() {
 
         // Remove the reference to this marker instance
         delete markers[oldDocument._id];
-      }
+      },
     });
 
     // Location & Directions button
@@ -382,13 +384,13 @@ Template.RescueMaps.onCreated(function() {
       // Set up the click event listener for 'Center Map': Set the center of
       // the map
       // to the current center of the control.
-      goCenterUI.addEventListener('click', function() {
+      goCenterUI.addEventListener('click', function () {
         map.instance.setCenter(Geolocation.latLng());
       });
 
       // Set up the click event listener for 'Set Center': Set the center of
       // the control to the current center of the map.
-      setCenterUI.addEventListener('click', function() {
+      setCenterUI.addEventListener('click', function () {
         directionsDisplay.setDirections({ routes: [] });
         Meteor.call('directionsList', Meteor.userId(), {});
       });
@@ -414,10 +416,10 @@ Template.RescueMaps.events({
     var request = {
       origin: from,
       destination: to,
-      travelMode: 'DRIVING'
+      travelMode: 'DRIVING',
     };
 
-    directionsService.route(request, function(response, status) {
+    directionsService.route(request, function (response, status) {
       if (status == 'OK') {
         directionsDisplay.setDirections(response);
         infowindow.close();
@@ -425,7 +427,7 @@ Template.RescueMaps.events({
           lt: Meteor.user().lat,
           lg: Meteor.user().lng,
           lat: Session.get('lat'),
-          lng: Session.get('lng')
+          lng: Session.get('lng'),
         });
         Meteor.call(
           'markers.rescue',
@@ -478,22 +480,22 @@ Template.RescueMaps.events({
     );
     //Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
     toastr.success('Succesfully send');
-  }
+  },
 });
 
 Template.RescueMaps.helpers({
-  geolocationError: function() {
+  geolocationError: function () {
     var error = Geolocation.error();
     return error && error.message;
   },
-  mapOptions: function() {
+  mapOptions: function () {
     var latLng = Geolocation.latLng();
     // Initialize the map once we have the latLng.
     if (GoogleMaps.loaded() && latLng) {
       return {
         center: new google.maps.LatLng(latLng),
-        zoom: MAP_ZOOM
+        zoom: MAP_ZOOM,
       };
     }
-  }
+  },
 });
