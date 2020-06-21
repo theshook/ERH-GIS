@@ -6,87 +6,340 @@
     <form class="edit-user-form">
       <div class="container">
         <div class="form-group">
-          <input type="text" value="{{editMode.profile.fname}}" class="form-control" id="fname" name="fname"
-            aria-describedby="fnameHelp" placeholder="Enter First Name">
+          <input
+            type="text"
+            value="{{editMode.profile.fname}}"
+            class="form-control"
+            id="fname"
+            name="fname"
+            aria-describedby="fnameHelp"
+            placeholder="Enter First Name"
+          />
         </div>
         <div class="form-group">
-          <input type="text" value="{{editMode.profile.lname}}" class="form-control" name="lname" id="lname"
-            aria-describedby="lnameHelp" placeholder="Enter Last Name">
+          <input
+            type="text"
+            value="{{editMode.profile.lname}}"
+            class="form-control"
+            name="lname"
+            id="lname"
+            aria-describedby="lnameHelp"
+            placeholder="Enter Last Name"
+          />
         </div>
         <div class="form-group">
-          <input type="email" value="{{userEmail}}" class="form-control" name="email" id="email"
-            aria-describedby="emailHelp" placeholder="Enter email">
+          <input
+            type="email"
+            value="{{userEmail}}"
+            class="form-control"
+            name="email"
+            id="email"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+          />
         </div>
         <div class="form-group">
           <select name="local" class="form-control" id="local" disabled>
-            <option title="Agno" value="Agno" selected="{{UserLocale 'Agno'}}">Agno</option>
-            <option title="Aguilar" value="Aguilar" selected="{{UserLocale 'Aguilar'}}">Aguilar</option>
-            <option title="Alaminos" value="Alaminos" selected="{{UserLocale 'Alaminos'}}">Alaminos</option>
-            <option title="Alcala" value="Alcala" selected="{{UserLocale 'Alcala'}}">Alcala</option>
-            <option title="Anda" value="Anda" selected="{{UserLocale 'Anda'}}">Anda</option>
-            <option title="Asingan" value="Asingan" selected="{{UserLocale 'Asingan'}}">Asingan</option>
-            <option title="Balungao" value="Balungao" selected="{{UserLocale 'Balungao'}}">Balungao</option>
-            <option title="Bani" value="Bani" selected="{{UserLocale 'Bani'}}">Bani</option>
-            <option title="Basista" value="Basista" selected="{{UserLocale 'Basista'}}">Basista</option>
-            <option title="Bayambang" value="Bayambang" selected="{{UserLocale 'Bayambang'}}">Bayambang</option>
-            <option title="Binalonan" value="Binalonan" selected="{{UserLocale 'Binalonan'}}">Binalonan</option>
-            <option title="Binmaley" value="Binmaley" selected="{{UserLocale 'Binmaley'}}">Binmaley</option>
-            <option title="Bolinao" value="Bolinao" selected="{{UserLocale 'Bolinao'}}">Bolinao</option>
-            <option title="Bugallon" value="Bugallon" selected="{{UserLocale 'Bugallon'}}">Bugallon</option>
-            <option title="Burgos" value="Burgos" selected="{{UserLocale 'Burgos'}}">Burgos</option>
-            <option title="Calasiao" value="Calasiao" selected="{{UserLocale 'Calasiao'}}">Calasiao</option>
-            <option title="Dagupan" value="Dagupan" selected="{{UserLocale 'Dagupan'}}">Dagupan</option>
-            <option title="Dasol" value="Dasol" selected="{{UserLocale 'Dasol'}}">Dasol</option>
-            <option title="Infanta" value="Infanta" selected="{{UserLocale 'Infanta'}}">Infanta</option>
-            <option title="Labrador" value="Labrador" selected="{{UserLocale 'Labrador'}}">Labrador</option>
-            <option title="Laoac" value="Laoac" selected="{{UserLocale 'Laoac'}}">Laoac</option>
-            <option title="Lingayen" value="Lingayen" selected="{{UserLocale 'Lingayen'}}">Lingayen</option>
-            <option title="Mabini" value="Mabini" selected="{{UserLocale 'Mabini'}}">Mabini</option>
-            <option title="Malasiqui" value="Malasiqui" selected="{{UserLocale 'Malasiqui'}}">Malasiqui</option>
-            <option title="Manaoag" value="Manaoag" selected="{{UserLocale 'Manaoag'}}">Manaoag</option>
-            <option title="Mangaldan" value="Mangaldan" selected="{{UserLocale 'Mangaldan'}}">Mangaldan</option>
-            <option title="Mangatarem" value="Mangatarem" selected="{{UserLocale 'Mangatarem'}}">Mangatarem</option>
-            <option title="Mapandan" value="Mapandan" selected="{{UserLocale 'Mapandan'}}">Mapandan</option>
-            <option title="Natividad" value="Natividad" selected="{{UserLocale 'Natividad'}}">Natividad</option>
-            <option title="Pozorrubio" value="Pozorrubio" selected="{{UserLocale 'Pozorrubio'}}">Pozorrubio</option>
-            <option title="Rosales" value="Rosales" selected="{{UserLocale 'Rosales'}}">Rosales</option>
-            <option title="San Carlos" value="San Carlos" selected="{{UserLocale 'San Carlos'}}">San Carlos</option>
-            <option title="San Fabian" value="San Fabian" selected="{{UserLocale 'San Fabian'}}">San Fabian</option>
-            <option title="San Jacinto" value="San Jacinto" selected="{{UserLocale 'San Jacinto'}}">San Jacinto</option>
-            <option title="San Manuel" value="San Manuel" selected="{{UserLocale 'San Manuel'}}">San Manuel</option>
-            <option title="San Nicolas" value="San Nicolas" selected="{{UserLocale 'San Nicolas'}}">San Nicolas</option>
-            <option title="San Quintin" value="San Quintin" selected="{{UserLocale 'San Quintin'}}">San Quintin</option>
-            <option title="Santa Barbara" value="Santa Barbara" selected="{{UserLocale 'Santa Barbara'}}">Santa Barbara
+            <option title="Agno" value="Agno" selected="{{UserLocale 'Agno'}}"
+              >Agno</option
+            >
+            <option
+              title="Aguilar"
+              value="Aguilar"
+              selected="{{UserLocale 'Aguilar'}}"
+              >Aguilar</option
+            >
+            <option
+              title="Alaminos"
+              value="Alaminos"
+              selected="{{UserLocale 'Alaminos'}}"
+              >Alaminos</option
+            >
+            <option
+              title="Alcala"
+              value="Alcala"
+              selected="{{UserLocale 'Alcala'}}"
+              >Alcala</option
+            >
+            <option title="Anda" value="Anda" selected="{{UserLocale 'Anda'}}"
+              >Anda</option
+            >
+            <option
+              title="Asingan"
+              value="Asingan"
+              selected="{{UserLocale 'Asingan'}}"
+              >Asingan</option
+            >
+            <option
+              title="Balungao"
+              value="Balungao"
+              selected="{{UserLocale 'Balungao'}}"
+              >Balungao</option
+            >
+            <option title="Bani" value="Bani" selected="{{UserLocale 'Bani'}}"
+              >Bani</option
+            >
+            <option
+              title="Basista"
+              value="Basista"
+              selected="{{UserLocale 'Basista'}}"
+              >Basista</option
+            >
+            <option
+              title="Bayambang"
+              value="Bayambang"
+              selected="{{UserLocale 'Bayambang'}}"
+              >Bayambang</option
+            >
+            <option
+              title="Binalonan"
+              value="Binalonan"
+              selected="{{UserLocale 'Binalonan'}}"
+              >Binalonan</option
+            >
+            <option
+              title="Binmaley"
+              value="Binmaley"
+              selected="{{UserLocale 'Binmaley'}}"
+              >Binmaley</option
+            >
+            <option
+              title="Bolinao"
+              value="Bolinao"
+              selected="{{UserLocale 'Bolinao'}}"
+              >Bolinao</option
+            >
+            <option
+              title="Bugallon"
+              value="Bugallon"
+              selected="{{UserLocale 'Bugallon'}}"
+              >Bugallon</option
+            >
+            <option
+              title="Burgos"
+              value="Burgos"
+              selected="{{UserLocale 'Burgos'}}"
+              >Burgos</option
+            >
+            <option
+              title="Calasiao"
+              value="Calasiao"
+              selected="{{UserLocale 'Calasiao'}}"
+              >Calasiao</option
+            >
+            <option
+              title="Dagupan"
+              value="Dagupan"
+              selected="{{UserLocale 'Dagupan'}}"
+              >Dagupan</option
+            >
+            <option
+              title="Dasol"
+              value="Dasol"
+              selected="{{UserLocale 'Dasol'}}"
+              >Dasol</option
+            >
+            <option
+              title="Infanta"
+              value="Infanta"
+              selected="{{UserLocale 'Infanta'}}"
+              >Infanta</option
+            >
+            <option
+              title="Labrador"
+              value="Labrador"
+              selected="{{UserLocale 'Labrador'}}"
+              >Labrador</option
+            >
+            <option
+              title="Laoac"
+              value="Laoac"
+              selected="{{UserLocale 'Laoac'}}"
+              >Laoac</option
+            >
+            <option
+              title="Lingayen"
+              value="Lingayen"
+              selected="{{UserLocale 'Lingayen'}}"
+              >Lingayen</option
+            >
+            <option
+              title="Mabini"
+              value="Mabini"
+              selected="{{UserLocale 'Mabini'}}"
+              >Mabini</option
+            >
+            <option
+              title="Malasiqui"
+              value="Malasiqui"
+              selected="{{UserLocale 'Malasiqui'}}"
+              >Malasiqui</option
+            >
+            <option
+              title="Manaoag"
+              value="Manaoag"
+              selected="{{UserLocale 'Manaoag'}}"
+              >Manaoag</option
+            >
+            <option
+              title="Mangaldan"
+              value="Mangaldan"
+              selected="{{UserLocale 'Mangaldan'}}"
+              >Mangaldan</option
+            >
+            <option
+              title="Mangatarem"
+              value="Mangatarem"
+              selected="{{UserLocale 'Mangatarem'}}"
+              >Mangatarem</option
+            >
+            <option
+              title="Mapandan"
+              value="Mapandan"
+              selected="{{UserLocale 'Mapandan'}}"
+              >Mapandan</option
+            >
+            <option
+              title="Natividad"
+              value="Natividad"
+              selected="{{UserLocale 'Natividad'}}"
+              >Natividad</option
+            >
+            <option
+              title="Pozorrubio"
+              value="Pozorrubio"
+              selected="{{UserLocale 'Pozorrubio'}}"
+              >Pozorrubio</option
+            >
+            <option
+              title="Rosales"
+              value="Rosales"
+              selected="{{UserLocale 'Rosales'}}"
+              >Rosales</option
+            >
+            <option
+              title="San Carlos"
+              value="San Carlos"
+              selected="{{UserLocale 'San Carlos'}}"
+              >San Carlos</option
+            >
+            <option
+              title="San Fabian"
+              value="San Fabian"
+              selected="{{UserLocale 'San Fabian'}}"
+              >San Fabian</option
+            >
+            <option
+              title="San Jacinto"
+              value="San Jacinto"
+              selected="{{UserLocale 'San Jacinto'}}"
+              >San Jacinto</option
+            >
+            <option
+              title="San Manuel"
+              value="San Manuel"
+              selected="{{UserLocale 'San Manuel'}}"
+              >San Manuel</option
+            >
+            <option
+              title="San Nicolas"
+              value="San Nicolas"
+              selected="{{UserLocale 'San Nicolas'}}"
+              >San Nicolas</option
+            >
+            <option
+              title="San Quintin"
+              value="San Quintin"
+              selected="{{UserLocale 'San Quintin'}}"
+              >San Quintin</option
+            >
+            <option
+              title="Santa Barbara"
+              value="Santa Barbara"
+              selected="{{UserLocale 'Santa Barbara'}}"
+              >Santa Barbara
             </option>
-            <option title="Santa Maria" value="Santa Maria" selected="{{UserLocale 'Santa Maria'}}">Santa Maria</option>
-            <option title="Santa Tomas" value="Santa Tomas" selected="{{UserLocale 'Santa Tomas'}}">Santa Tomas</option>
-            <option title="Sison" value="Sison" selected="{{UserLocale 'Sison'}}">Sison</option>
-            <option title="Sual" value="Sual" selected="{{UserLocale 'Sual'}}">Sual</option>
-            <option title="Tayug" value="Tayug" selected="{{UserLocale 'Tayug'}}">Tayug</option>
-            <option title="Umingan" value="Umingan" selected="{{UserLocale 'Umingan'}}">Umingan</option>
-            <option title="Urbiztondo" value="Urbiztondo" selected="{{UserLocale 'Urbiztondo'}}">Urbiztondo</option>
-            <option title="Villasis" value="Villasis" selected="{{UserLocale 'Villasis'}}">Villasis</option>
+            <option
+              title="Santa Maria"
+              value="Santa Maria"
+              selected="{{UserLocale 'Santa Maria'}}"
+              >Santa Maria</option
+            >
+            <option
+              title="Santa Tomas"
+              value="Santa Tomas"
+              selected="{{UserLocale 'Santa Tomas'}}"
+              >Santa Tomas</option
+            >
+            <option
+              title="Sison"
+              value="Sison"
+              selected="{{UserLocale 'Sison'}}"
+              >Sison</option
+            >
+            <option title="Sual" value="Sual" selected="{{UserLocale 'Sual'}}"
+              >Sual</option
+            >
+            <option
+              title="Tayug"
+              value="Tayug"
+              selected="{{UserLocale 'Tayug'}}"
+              >Tayug</option
+            >
+            <option
+              title="Umingan"
+              value="Umingan"
+              selected="{{UserLocale 'Umingan'}}"
+              >Umingan</option
+            >
+            <option
+              title="Urbiztondo"
+              value="Urbiztondo"
+              selected="{{UserLocale 'Urbiztondo'}}"
+              >Urbiztondo</option
+            >
+            <option
+              title="Villasis"
+              value="Villasis"
+              selected="{{UserLocale 'Villasis'}}"
+              >Villasis</option
+            >
           </select>
         </div>
         <div class="form-group">
           <select name="dept" class="form-control" id="dept">
-            <option value="Hospital" selected="{{UserDept 'Hospital'}}">Hospital</option>
-            <option value="Police" selected="{{UserDept 'Police'}}">Police</option>
-            <option value="Fire" selected="{{UserDept 'Fire Protection'}}">Fire Protection</option>
+            <option value="DRRM" selected="{{UserDept 'DRRM'}}">DRRM</option>
+            <option value="Hospital" selected="{{UserDept 'Hospital'}}"
+              >Hospital</option
+            >
+            <option value="Police" selected="{{UserDept 'Police'}}"
+              >Police</option
+            >
+            <option value="Fire" selected="{{UserDept 'Fire Protection'}}"
+              >Fire Protection</option
+            >
           </select>
         </div>
         <div class="form-group">
           <select name="userType" class="form-control userType">
-            <option value="Employee" selected="{{UserType 'Employee'}}">Employee</option>
-            <option value="Rescue Unit" selected="{{UserType 'Rescue Unit'}}">Rescue Unit</option>
+            <option value="Employee" selected="{{UserType 'Employee'}}"
+              >Employee</option
+            >
+            <option value="Rescue Unit" selected="{{UserType 'Rescue Unit'}}"
+              >Rescue Unit</option
+            >
             <option value="Admin" selected="{{UserType 'Admin'}}">Admin</option>
           </select>
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-outline-primary btn-block">Update</button>
+          <button type="submit" class="btn btn-outline-primary btn-block">
+            Update
+          </button>
         </div>
         <div class="form-group">
-          <button class="btn btn-outline-warning btn-block rstPassword">Reset Password</button>
+          <button class="btn btn-outline-warning btn-block rstPassword">
+            Reset Password
+          </button>
         </div>
       </div>
     </form>
