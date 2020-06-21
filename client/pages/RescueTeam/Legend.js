@@ -1,25 +1,29 @@
-export default function() {
+export default function () {
   var icons = {
+    drrm: {
+      name: 'DRRM',
+      icon: '/drrm.png',
+    },
     parking: {
       name: 'First Aid',
-      icon: '/firstaid.png'
+      icon: '/firstaid.png',
     },
     library: {
       name: 'Fire Men',
-      icon: '/firemen.png'
+      icon: '/firemen.png',
     },
     info: {
       name: 'Police',
-      icon: '/police.png'
+      icon: '/police.png',
     },
     solved: {
       name: 'Responded Incident',
-      icon: '/grn-circle.png'
+      icon: '/grn-circle.png',
     },
     unsolved: {
       name: 'Unresponded Incident',
-      icon: '/red-circle.png'
-    }
+      icon: '/red-circle.png',
+    },
   };
   var legend = document.getElementById('legend');
   for (var key in icons) {
@@ -30,6 +34,4 @@ export default function() {
     div.innerHTML = '<img src="' + icon + '"> ' + name;
     legend.appendChild(div);
   }
-
-  
 }

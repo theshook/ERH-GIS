@@ -1,45 +1,49 @@
-export default function() {
+export default function () {
   var icons = {
+    drrm: {
+      name: 'DRRM',
+      icon: '/drrm.png',
+    },
     parking: {
       name: 'First Aid',
-      icon: '/firstaid.png'
+      icon: '/firstaid.png',
     },
     library: {
       name: 'Fire Men',
-      icon: '/firemen.png'
+      icon: '/firemen.png',
     },
     info: {
       name: 'Police',
-      icon: '/police.png'
+      icon: '/police.png',
     },
     nfa: {
       name: 'Requesting First Aid',
-      icon: '/ineedfirstaid.png'
+      icon: '/ineedfirstaid.png',
     },
     nff: {
       name: 'Requesting Fire Men',
-      icon: '/ineedff.png'
+      icon: '/ineedff.png',
     },
     np: {
       name: 'Requesting Police',
-      icon: '/ineedpolice.png'
+      icon: '/ineedpolice.png',
     },
     nhelp: {
       name: 'Need Help/Backup',
-      icon: '/needhelp.svg'
+      icon: '/needhelp.svg',
     },
     solved: {
       name: 'Responded Incident',
-      icon: '/grn-circle.png'
+      icon: '/grn-circle.png',
     },
     unsolved: {
       name: 'Unresponded Incident',
-      icon: '/red-circle.png'
+      icon: '/red-circle.png',
     },
     responding: {
       name: 'Responding Incident',
-      icon: '/backup.png'
-    }
+      icon: '/backup.png',
+    },
   };
   var legend = document.getElementById('legend');
   for (var key in icons) {
@@ -47,8 +51,8 @@ export default function() {
     var name = type.name;
     var icon = type.icon;
     var div = document.createElement('div');
-    div.innerHTML = '<img src="' + icon + '"  width="32px" height="32px"> ' + name;
+    div.innerHTML =
+      '<img src="' + icon + '"  width="32px" height="32px"> ' + name;
     legend.appendChild(div);
   }
-  
 }
