@@ -21,9 +21,9 @@ newDate = function (val) {
   if (val instanceof Date) {
     return moment(val).calendar();
   } else {
-    return "Never";
+    return 'Never';
   }
-}
+};
 
 Template.Maps.onCreated(function () {
   Meteor.subscribe('markers_collection');
@@ -49,24 +49,23 @@ Template.Maps.onCreated(function () {
           position: new google.maps.LatLng(document.lat, document.lng),
           map: map.instance,
           icon: document.icon,
-          id: document._id
+          id: document._id,
         });
         // toastr.warning("New Incident has been added");
         google.maps.event.addListener(marker, 'click', function (event) {
-
           let marky = Markers.findOne({ _id: marker.id });
 
           let date, local, address, hospital, image, respondent, help, backup;
           date = newDate(marky.createdAt);
-          local = marky.local
-          address = marky.address
-          hospital = ((marky.Hospital) ? marky.Hospital.length : 0)
-          fire = ((marky.Fire) ? marky.Fire.length : 0)
-          police = ((marky.Police) ? marky.Police.length : 0)
-          image = marky.imageUrl
-          respondent = marky.respondent
-          help = ((marky.help) ? marky.help : 'None')
-          backup = ((marky.backup) ? marky.backup : 'None')
+          local = marky.local;
+          address = marky.address;
+          hospital = marky.Hospital ? marky.Hospital.length : 0;
+          fire = marky.Fire ? marky.Fire.length : 0;
+          police = marky.Police ? marky.Police.length : 0;
+          image = marky.imageUrl;
+          respondent = marky.respondent;
+          help = marky.help ? marky.help : 'None';
+          backup = marky.backup ? marky.backup : 'None';
 
           Session.set('markerId', marker.id);
           Session.set('imageUrl', image);
@@ -76,7 +75,8 @@ Template.Maps.onCreated(function () {
           let dropdown = '';
 
           if (help == Meteor.user().profile.local) {
-            dropdown = '<h5 class="text-info">Select City to request a help or backup</h5>' +
+            dropdown =
+              '<h5 class="text-info">Select City to request a help or backup</h5>' +
               '<select name="local" class="form-control" id="local">' +
               '<option title="Agno" value="Agno">Agno</option>' +
               '<option title="Aguilar" value="Aguilar">Aguilar</option>' +
@@ -134,17 +134,17 @@ Template.Maps.onCreated(function () {
               '</div>' +
               '</div>';
 
-            buttons = '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
-
+            buttons =
+              '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
           } else if (backup.length != 1) {
-
             for (var i = 0; i < backup.length; i++) {
               if (backup[i] == Meteor.user().profile.local || help != 'None') {
                 buttons = '';
                 dropdown = '';
                 break;
               } else {
-                dropdown = '<h5 class="text-info">Select City to request a help or backup</h5>' +
+                dropdown =
+                  '<h5 class="text-info">Select City to request a help or backup</h5>' +
                   '<select name="local" class="form-control" id="local">' +
                   '<option title="Agno" value="Agno">Agno</option>' +
                   '<option title="Aguilar" value="Aguilar">Aguilar</option>' +
@@ -202,33 +202,54 @@ Template.Maps.onCreated(function () {
                   '</div>' +
                   '</div>';
 
-                buttons = '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
+                buttons =
+                  '<button class="btn btn-outline-warning rFire">I need Fire    Unit</button><button class="btn btn-outline-info rPolice">I need Police   Unit</button><button class="btn btn-outline-danger rHospital">I need Hospital Unit</button><button class="btn float-left btn-outline-primary responded">This is already responded</button><br>';
               }
             }
           }
 
           infowindow.setContent(
             '<div class="container">' +
-            '<div class="row">' +
-            '<div class="col-md-6">' +
-            '<h4 class="text-info">Date: ' + date + '</h4>' +
-            '<h5 class="text-info">Local: ' + local + '</h5>' +
-            '<h5 class="text-info">Address: ' + address + '</h5>' +
-            '<h5 class="text-info">Respondent: ' + respondent + '</h5>' +
-            '<h5>Help Unit: ' + help + '</h5>' +
-            '<h5>Backup Unit: ' + backup + '</h5>' +
-            '<h5 class="text-primary">Rescue Unit will go</h5>' +
-            '<h5 class="text-primary">Fire Unit: ' + fire + ' </h5>' +
-            '<h5 class="text-primary">Police Unit: ' + police + ' </h5>' +
-            '<h5 class="text-primary">First Aid Unit: ' + hospital + ' </h5>' +
-            buttons +
-            '</div>' +
-            '<div class="col-md-6">' +
-            '<img src="' + image + '" height="300" width="300"/>' +
-            dropdown +
-            '</div>' +
-            '</div>' +
-            '</div>'
+              '<div class="row">' +
+              '<div class="col-md-6">' +
+              '<h4 class="text-info">Date: ' +
+              date +
+              '</h4>' +
+              '<h5 class="text-info">Local: ' +
+              local +
+              '</h5>' +
+              '<h5 class="text-info">Address: ' +
+              address +
+              '</h5>' +
+              '<h5 class="text-info">Respondent: ' +
+              respondent +
+              '</h5>' +
+              '<h5>Help Unit: ' +
+              help +
+              '</h5>' +
+              '<h5>Backup Unit: ' +
+              backup +
+              '</h5>' +
+              '<h5 class="text-primary">Rescue Unit will go</h5>' +
+              '<h5 class="text-primary">Fire Unit: ' +
+              fire +
+              ' </h5>' +
+              '<h5 class="text-primary">Police Unit: ' +
+              police +
+              ' </h5>' +
+              '<h5 class="text-primary">First Aid Unit: ' +
+              hospital +
+              ' </h5>' +
+              buttons +
+              '</div>' +
+              '<div class="col-md-6">' +
+              '<img src="' +
+              image +
+              '" height="300" width="300"/>' +
+              dropdown +
+              '</div>' +
+              '</div>' +
+              '</div>'
           );
 
           infowindow.open(map, marker);
@@ -237,7 +258,10 @@ Template.Maps.onCreated(function () {
       },
       changed: function (newDocument, oldDocument) {
         markers[newDocument._id].setIcon(newDocument.icon);
-        markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng });
+        markers[newDocument._id].setPosition({
+          lat: newDocument.lat,
+          lng: newDocument.lng,
+        });
         // Meteor.call('markers.update', newDocument._id, {lat: event.latLng.lat(), lng: event.latLng.lng()});
       },
       removed: function (oldDocument) {
@@ -245,12 +269,11 @@ Template.Maps.onCreated(function () {
         markers[oldDocument._id].setMap(null);
 
         // Clear the event listener
-        google.maps.event.clearInstanceListeners(
-          markers[oldDocument._id]);
+        google.maps.event.clearInstanceListeners(markers[oldDocument._id]);
 
         // Remove the reference to this marker instance
         delete markers[oldDocument._id];
-      }
+      },
     });
     // END
 
@@ -264,6 +287,8 @@ Template.Maps.onCreated(function () {
           icon = '/police.png';
         } else if (type == 'Fire') {
           icon = '/firemen.png';
+        } else if (type == 'DRRM') {
+          icon = '/drrm.png';
         }
         var marker = new google.maps.Marker({
           draggable: false,
@@ -271,33 +296,43 @@ Template.Maps.onCreated(function () {
           position: new google.maps.LatLng(document.lat, document.lng),
           map: map.instance,
           icon: icon,
-          id: document._id
+          id: document._id,
         });
         // toastr.warning("New Incident has been added");
         google.maps.event.addListener(marker, 'click', function (event) {
           // Meteor.call('login.info', marker.id, event.latLng.lat(), event.latLng.lng(), true);
           let marky = Meteor.users.find({ _id: marker.id }).fetch();
           infowindow.setContent(
-            '<h3 class="text-info">' + marky[0].profile.lname + ', ' + marky[0].profile.fname + '</h3>' +
-            '<h3>' + marky[0].profile.local + '</h3>' +
-            '<h3>' + marky[0].roles[1] + ' Unit</h3>');
+            '<h3 class="text-info">' +
+              marky[0].profile.lname +
+              ', ' +
+              marky[0].profile.fname +
+              '</h3>' +
+              '<h3>' +
+              marky[0].profile.local +
+              '</h3>' +
+              '<h3>' +
+              marky[0].roles[1] +
+              ' Unit</h3>'
+          );
           infowindow.open(map, marker);
         });
         markers[document._id] = marker;
       },
       changed: function (newDocument, oldDocument) {
-        markers[newDocument._id].setPosition({ lat: newDocument.lat, lng: newDocument.lng });
+        markers[newDocument._id].setPosition({
+          lat: newDocument.lat,
+          lng: newDocument.lng,
+        });
       },
       removed: function (oldDocument) {
         // Remove the marker from the map
         markers[oldDocument._id].setMap(null);
         // Clear the event listener
-        google.maps.event.clearInstanceListeners(
-          markers[oldDocument._id]
-        );
+        google.maps.event.clearInstanceListeners(markers[oldDocument._id]);
         // Remove the reference to this marker instance
         delete markers[oldDocument._id];
-      }
+      },
     });
   });
 });
@@ -305,37 +340,74 @@ Template.Maps.onCreated(function () {
 Template.Maps.events({
   'click .rFire'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Fire Unit');
-    Meteor.call('serverNotification', 'Fire Unit', Session.get('address'), Session.get('imageUrl'))
+    Meteor.call(
+      'serverNotification',
+      'Fire Unit',
+      Session.get('address'),
+      Session.get('imageUrl')
+    );
     toastr.success('Succesfully send');
-    Meteor.call('markers.update.icon', Session.get('markerId'), '/ineedff.png')
+    Meteor.call('markers.update.icon', Session.get('markerId'), '/ineedff.png');
   },
   'click .rPolice'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Police Unit');
-    Meteor.call('serverNotification', 'Police Unit', Session.get('address'), Session.get('imageUrl'))
+    Meteor.call(
+      'serverNotification',
+      'Police Unit',
+      Session.get('address'),
+      Session.get('imageUrl')
+    );
     toastr.success('Succesfully send');
-    Meteor.call('markers.update.icon', Session.get('markerId'), '/ineedpolice.png')
+    Meteor.call(
+      'markers.update.icon',
+      Session.get('markerId'),
+      '/ineedpolice.png'
+    );
   },
   'click .rHospital'() {
     Meteor.call('markers.addRescue', Session.get('markerId'), 'Hospital Unit');
-    Meteor.call('serverNotification', 'Hospital Unit', Session.get('address'), Session.get('imageUrl'))
+    Meteor.call(
+      'serverNotification',
+      'Hospital Unit',
+      Session.get('address'),
+      Session.get('imageUrl')
+    );
     toastr.success('Succesfully send');
-    Meteor.call('markers.update.icon', Session.get('markerId'), '/ineedfirstaid.png')
+    Meteor.call(
+      'markers.update.icon',
+      Session.get('markerId'),
+      '/ineedfirstaid.png'
+    );
   },
   'click .request'() {
-    let city = document.getElementById("local").value;
-    Meteor.call('markers.sendHelp', Session.get('markerId'), city, 'needhelp.svg');
+    let city = document.getElementById('local').value;
+    Meteor.call(
+      'markers.sendHelp',
+      Session.get('markerId'),
+      city,
+      'needhelp.svg'
+    );
     toastr.success('Succesfully send');
   },
   'click .backup'() {
-    let city = document.getElementById("local").value;
-    Meteor.call('markers.sendBackup', Session.get('markerId'), city, 'needhelp.svg');
+    let city = document.getElementById('local').value;
+    Meteor.call(
+      'markers.sendBackup',
+      Session.get('markerId'),
+      city,
+      'needhelp.svg'
+    );
     toastr.success('Succesfully send');
   },
   'click .responded'() {
     Meteor.call('markers.responded', Session.get('markerId'));
-    Meteor.call('markers.update.icon', Session.get('markerId'), '/grn-circle.png');
+    Meteor.call(
+      'markers.update.icon',
+      Session.get('markerId'),
+      '/grn-circle.png'
+    );
     toastr.success('Success!');
-  }
+  },
 });
 
 Template.Maps.helpers({
@@ -349,8 +421,8 @@ Template.Maps.helpers({
     if (GoogleMaps.loaded() && latLng) {
       return {
         center: new google.maps.LatLng(15.8949, 120.2863),
-        zoom: 10
+        zoom: 10,
       };
     }
-  }
+  },
 });
