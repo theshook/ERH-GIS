@@ -16,7 +16,7 @@
     "datatables.net-bs": "^1.10.16",
     "jquery": "^1.11.2",
     "meteor-node-stubs": "^0.3.2",
-    "moment": "^2.19.2",
+    "moment": "^2.29.4",
     "toastr": "^2.1.2"
   },
   "version": "1.0.0",
